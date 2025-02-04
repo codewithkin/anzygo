@@ -1,3 +1,4 @@
+import { signIn } from "@/auth";
 import { SignInButton } from "@/components/auth/SignInButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,9 +30,10 @@ export default function SignIn() {
             {/* form */}
             <form 
             className="flex flex-col gap-4"
-            action={async () => {
+            action={async (formData: FormData) => {
                 "use server"
-                console.log('helllo, earth !')
+
+                await signIn("nodemailer", formData);
             }}>
                 {/* Email field */}
                 <Input
