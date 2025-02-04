@@ -2,26 +2,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
- 
+
 generator client {
   provider = "prisma-client-js"
 }
- 
+
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
+  id            String    @id @default(cuid())
+  email         String    @unique
   emailVerified DateTime?
-  image         String?
+  name          String? // Optional, user can set it later
+  image         String? // Optional, profile picture
+  bio           String? // Optional, short user bio
+  status        String? // Optional, e.g., "Online", "Away"
+  theme         String? // Optional, user-selected theme
+  settings      Json? // Optional, stores user preferences
+
   accounts      Account[]
   sessions      Session[]
-  // Optional for WebAuthn support
   Authenticator Authenticator[]
- 
+
+  chats    ChatUser[]
+  messages Message[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
+// NextAuth Models
 model Account {
   userId            String
   type              String
@@ -34,33 +42,33 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([provider, providerAccountId])
 }
- 
+
 model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@id([identifier, token])
 }
- 
+
 // Optional for WebAuthn support
 model Authenticator {
   credentialID         String  @unique
@@ -71,8 +79,59 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([userId, credentialID])
+}
+
+// Chat Models
+model Chat {
+  id        String     @id @default(cuid())
+  type      String // "private" | "group"
+  name      String? // For group chats
+  image     String? // Group chat image
+  users     ChatUser[]
+  messages  Message[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model ChatUser {
+  id     String @id @default(cuid())
+  userId String
+  chatId String
+  role   String // "admin" | "member"
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id       String  @id @default(cuid())
+  chatId   String
+  senderId String
+  content  String?
+  type     String // "text" | "image" | "video" | "file"
+  mediaId  String? // If there's an attachment
+  readBy   Json? // Array of userIds who read the message
+  sender   User    @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  chat     Chat    @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  media    Media[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  type      String // "image" | "video" | "file"
+  messageId String?
+  message   Message? @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
