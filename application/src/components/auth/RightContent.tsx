@@ -1,5 +1,6 @@
 "use client"
 import { motion } from "framer-motion";
+import { Avatars } from "./Decorations/Avatars";
 
 export const RightContent = () => {
   return (
@@ -21,8 +22,10 @@ export const RightContent = () => {
 
       className="bg-primary p-8 md:p-16"
     >
+      <Avatars />
+
       {/* Circles */}
-      <article className="h-full w-full flex justify-center items-center">
+      <article className="z-10 top-0 bottom-0 left-0 right-0 absolute flex justify-center items-center">
         {/* Outer circle (bigger one) */}
         <motion.article
           initial={{
@@ -43,7 +46,7 @@ export const RightContent = () => {
             delay: 0.3,
             duration: 0.4,
           }}
-          className="bg-gradient-to-t from-blue-700 to-sky-300 flex justify-center items-center shadow-lg rounded-full hover:cursor-pointer transition duration-500 hover:shadow-xl"
+          className="bg-gradient-to-t z-10 from-blue-700 to-sky-300 flex justify-center items-center shadow-lg rounded-full hover:cursor-pointer transition duration-500 hover:shadow-xl"
         >
           {/* Inner circle (smaller one) */}
           <motion.article
@@ -67,7 +70,7 @@ export const RightContent = () => {
               width: "275px",
               height: "275px",
             }}
-            className="bg-sky-300 shadow-lg rounded-full hover:cursor-pointer transition duration-500 hover:shadow-xl"
+            className="bg-sky-300 z-10 shadow-lg rounded-full hover:cursor-pointer transition duration-500 hover:shadow-xl"
           ></motion.article>
         </motion.article>
       </article>

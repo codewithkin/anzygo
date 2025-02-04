@@ -13,7 +13,7 @@ export default function SignIn() {
         {/* Left Content */}
         <article className="flex flex-col gap-8 md:gap-12 py-16 md:px-16 justify-center px-4">
             {/* Logo and Title */}
-            <article className="flex gap-2 items-center">
+            <article className="flex items-center">
                 <Image 
                     src="/images/brand/icon.png" 
                     alt="Anzygo logo" 
