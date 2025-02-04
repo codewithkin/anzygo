@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from "next-auth"
 import Nodemailer from "next-auth/providers/nodemailer"
+import { sendVerificationRequest } from "./helpers/auth/sendVerficiationEmail"
  
 export default { providers: [
     Nodemailer({
@@ -12,5 +13,6 @@ export default { providers: [
         },
       },
       from: process.env.EMAIL_FROM,
+      sendVerificationRequest: async (params) => sendVerificationRequest(params),
     })
 ] } satisfies NextAuthConfig
