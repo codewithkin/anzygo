@@ -2,7 +2,10 @@ import { signIn } from "@/auth";
 import { SignInButton } from "@/components/auth/SignInButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-label";
 import Image from "next/image";
+import {motion} from "framer-motion"
+import { RightContent } from "@/components/auth/RightContent";
 
 export default function SignIn() {
   return (
@@ -36,9 +39,11 @@ export default function SignIn() {
                 await signIn("nodemailer", formData);
             }}>
                 {/* Email field */}
+                <Label htmlFor="email">Email</Label>
                 <Input
                     type="email"
                     name="email"
+                    id="email"
                     placeholder="Email"
                 />
 
@@ -48,7 +53,9 @@ export default function SignIn() {
         </article>
 
         {/* Right Content */}
-        <article></article>
+        <RightContent />
     </div>
   );
 }
+
+
