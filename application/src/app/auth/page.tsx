@@ -13,7 +13,7 @@ export default function SignIn() {
         {/* Left Content */}
         <article className="flex flex-col gap-8 md:gap-12 py-16 md:px-16 justify-center px-4">
             {/* Logo and Title */}
-            <article className="flex gap-4 items-center">
+            <article className="flex gap-2 items-center">
                 <Image 
                     src="/images/brand/icon.png" 
                     alt="Anzygo logo" 
@@ -39,13 +39,15 @@ export default function SignIn() {
                 await signIn("nodemailer", formData);
             }}>
                 {/* Email field */}
-                <Label htmlFor="email">Email</Label>
-                <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Email"
-                />
+                <article>
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Email"
+                    />
+                </article>
 
                 {/* Sign in button */}
                 <SignInButton />
