@@ -1,9 +1,8 @@
 // middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from './auth';
 
 export function middleware(req: NextRequest) {
-  console.log("Route Middleware", req.nextUrl.pathname);
-  // You can add additional middleware logic here
   return NextResponse.next();
 }
 
