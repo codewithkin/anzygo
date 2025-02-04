@@ -21,8 +21,7 @@ function html(params: { url: string; host: string; theme: Theme }) {
   const { url } = params;
 
   return `
-   <body style="background: #f9f9f9; width: 100%; padding: 10px; text-align: center">
-    
+   <body style="background: #f9f9f9; width: 100%; padding: 10px; text-align: center">    
     <article style="text-align: center">
         <h1 style="font-family: Helvetica, Arial, sans-serif;">Welcome back to Anzygo ! </h1> 
         <p style="font-family: Helvetica, Arial, sans-serif; font-size: 12; color: #3f37c9">Communication - reimagined</p>
