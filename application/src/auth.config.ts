@@ -17,6 +17,8 @@ export default { providers: [
     })
 ],
 pages: {
-  signIn: "/auth"
+  signIn: "/auth",
+  verifyRequest: "/auth/verify",
+  error: "/auth/error"
 }
 } satisfies NextAuthConfig

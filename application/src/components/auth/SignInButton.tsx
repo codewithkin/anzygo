@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button"
 import { useFormStatus } from "react-dom"
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export function SignInButton() {
   const { pending } = useFormStatus();
@@ -16,7 +16,7 @@ export function SignInButton() {
     >
       {pending ? (
         <div className="flex items-center gap-2">
-          <Loader className="animate-spin" size={20} />
+          <Loader2 className="animate-spin" size={20} />
           <span>Signing you in...</span>
         </div>
       ) : (
