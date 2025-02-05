@@ -17,7 +17,7 @@ export const Avatars = () => {
       className="flex gap-2"
     >
       <article>
-        <h2 className="font-medium text-xl flex flex-col gap-2">
+        <h2 className="font-medium text-xl flex flex-col gap-2 text-white">
           Join 200+ users
         </h2>
 
