@@ -20,17 +20,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Get the current session
-  const session = await auth();
-
-  // If the user s not signed in...
-  if(!session?.user.email) {
-    console.log("Bro is logged out");
-
-    // Redirect them to the sign in page
-    return redirect("/auth");
-  }
-
   return (
     <html lang="en">
       <body
