@@ -1,4 +1,5 @@
 import LeftBar from "@/components/chat/LeftBar";
+import Page from "@/components/chat/Page";
 
 export default function Chats() {
   return (
@@ -11,9 +12,7 @@ export default function Chats() {
           <LeftBar />
 
           {/* Chat Page */}
-          <article className="w-full">
-            Wassup !
-          </article>
+          <Page />
         </article>
 
         {/* Chats details */}
