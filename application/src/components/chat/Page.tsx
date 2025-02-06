@@ -1,7 +1,7 @@
 import { MoreHorizontal, Phone, Search } from "lucide-react"
 
 function Header () {
-  const status: "online" | "offline" | "typing" = "typing"
+  const status: "online" | "offline" | "typing" = "online"
 
     return (
         <article className="w-full flex justify-between items-center py-2">
@@ -15,9 +15,9 @@ function Header () {
 
             {/* Tools */}
             <article className="flex gap-4 items-center">
-              <Search strokeWidth={1} className="text-slate-400" />
-              <Phone strokeWidth={1} className="text-slate-400" />
-              <MoreHorizontal strokeWidth={1} className="text-slate-400" />
+              <Search strokeWidth={1} className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300" />
+              <Phone strokeWidth={1} className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300" />
+              <MoreHorizontal strokeWidth={1} className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300" />
             </article>
         </article>
     )
