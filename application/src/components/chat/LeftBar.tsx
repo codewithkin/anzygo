@@ -39,11 +39,12 @@ const LeftBar = () => {
     ]
 
   return (
-    <article className="h-full w-full">
+    <article className="h-full w-1/4">
         {/* SearchBar */}
         <Input 
+            className="max-w-[300px]"
             classNames={{
-                input: "placeholder:text-slate-400 bg-primary/40"
+                input: "placeholder:text-slate-400 bg-primary/40 max-h-[300px]"
             }}
             startContent={<Search size={20} className="text-slate-400" />}
             placeholder="Search"

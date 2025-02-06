@@ -4,11 +4,16 @@ export default function Chats() {
   return (
     <article className="flex h-full flex-col p-4 w-full">
       {/* Chats list, chat page + Chat details */}
-      <article className="flex gap-2 items-center w-full h-full">
+      <article className="flex gap-8 items-center w-full h-full">
         {/* Chats list, chat page */}
-        <article className="rounded-xl bg-white p-4 min-w-[400px] h-full">
+        <article className="rounded-xl bg-white p-4 min-w-[400px] w-full h-full flex gap-8 items-center">
           {/* Searchbar and chat list */}
           <LeftBar />
+
+          {/* Chat Page */}
+          <article className="w-full">
+            Wassup !
+          </article>
         </article>
 
         {/* Chats details */}
