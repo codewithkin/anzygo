@@ -13,7 +13,13 @@ export default function NotFound() {
     }}
     className="flex h-screen items-center justify-center">
       <article className="text-center">
-        <h1 className="text-9xl font-black">
+        <h1
+        style={{
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          WebkitTextStroke: "2px black",
+        }}
+        className="text-9xl font-black text-transparent">
             404
         </h1>
         
