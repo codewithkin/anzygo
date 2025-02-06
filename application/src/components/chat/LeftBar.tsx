@@ -19,7 +19,7 @@ const LeftBar = () => {
            profilePicture: "/images/kin.jpg"
        },
        {
-        id: 1,
+        id: 2,
         name: "Jane Doe",
         lastMessage: {
             content: "Hey there Kin, you still up for tomorrow ?",
@@ -28,7 +28,7 @@ const LeftBar = () => {
         profilePicture: "/images/ki.jpg"
         },
         {
-            id: 1,
+            id: 3,
             name: "Bob Smith",
             lastMessage: {
                 content: "You'll have it by Friday, Promise.",
@@ -39,7 +39,7 @@ const LeftBar = () => {
     ]
 
   return (
-    <article className="h-full p-4 w-full">
+    <article className="h-full w-full">
         {/* SearchBar */}
         <Input 
             classNames={{
@@ -57,9 +57,8 @@ const LeftBar = () => {
                     chats.map((chat) => (
                         <article
                             key={chat.id}
-                            className="flex gap-4 justify-between items-center p-2 rounded-xl"
+                            className="flex gap-4 items-center p-2 rounded-xl"
                         >
-                            <article className="w-full flex gap-4 items-center">
                                 <Avatar 
                                     className="w-12 h-12 text-sm"
                                     showFallback
@@ -74,12 +73,6 @@ const LeftBar = () => {
                                     <h3 className="text-md font-medium">{chat.name}</h3>
                                     <p className="text-primary text-regular text-xs">{chat.lastMessage.content.substring(0, 20).concat("...")}</p>
                                 </article>
-                            </article>
-
-                            {/* Last Message Sent when ? */}
-                            <p className="text-slate-400 text-xs">
-                                {formatDistanceToNow(new Date(chat.lastMessage.time), { addSuffix: true, unit: "minute" })}
-                            </p>
                         </article>
                     ))
                 :
