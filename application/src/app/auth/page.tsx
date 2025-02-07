@@ -44,6 +44,7 @@ export default function SignIn() {
                     <Input
                         type="email"
                         name="email"
+                        required
                         id="email"
                         placeholder="Email"
                     />

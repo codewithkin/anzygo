@@ -1,11 +1,12 @@
 import { Avatar } from "@heroui/avatar"
-import { Eye, EyeClosedIcon, MessagesSquare, MoreHorizontal, Phone, Search } from "lucide-react"
+import { Input } from "@heroui/input"
+import { Eye, EyeClosedIcon, MessagesSquare, Mic, MoreHorizontal, Paperclip, Phone, Search, SendHorizontal } from "lucide-react"
 
 function Header () {
   const status: "online" | "offline" | "typing" = "online"
 
     return (
-        <article className="w-full flex justify-between items-center py-2">
+        <article className="w-full flex justify-between items-center py-2 h-1/5">
             <article className="flex flex-col gap-2">
               <article className="flex items-center gap-2">
                 <Avatar 
@@ -86,10 +87,11 @@ function Page() {
   ]
 
   return (
-    <article className="w-full h-full">
+    <article className="w-full h-full flex flex-col justify-between">
         <Header />
 
-        <article className="w-full h-full gap-4 flex flex-col py-2">
+        {/* Messages */}
+        <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll py-4">
           {
             messageData.length > 0 ?
             messageData.map((message: Message) => {
@@ -115,6 +117,23 @@ function Page() {
             <article>Wasssssah</article>
           }
         </article>
+
+        {/* Input */}
+        <Input
+        className="py-2 h-1/5 justify-end flex flex-col"
+          classNames={{
+            inputWrapper: "justify-end flex flex-col absolute bottom-0",
+            input: "bg-primary "
+          }}
+          placeholder="Say something..."
+          startContent={<Paperclip className="text-slate-400" size={20} strokeWidth={1} />}
+          endContent={
+            <article className="flex items-center gap-2">
+              <Mic className="text-slate-400" size={20} strokeWidth={1} />
+              <SendHorizontal className="text-slate-400" size={20} strokeWidth={1}  />
+            </article>
+          }
+        />
     </article>
   )
 }
