@@ -1,6 +1,7 @@
 import { Avatar } from "@heroui/avatar";
 import { Input } from "@heroui/input";
 import {
+  Box,
   Eye,
   EyeClosedIcon,
   MessagesSquare,
@@ -11,6 +12,8 @@ import {
   Search,
   SendHorizontal,
 } from "lucide-react";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const StatusIndicator = ({ status }: { status: "online" | "offline" | "typing" }) => (
   <article className="flex gap-1 items-center">
@@ -112,7 +115,10 @@ const Messages = ({ messageData }: { messageData: Message[] }) => (
         </article>
       ))
     ) : (
-      <article>Wasssssah</article>
+      <article className="w-full h-full flex flex-col justify-center items-center">
+        <h3 className="font-semibold text-xl">No messages yet</h3>
+        <p className="text-slate-400">Go on...say something</p>
+      </article>
     )}
   </article>
 );
@@ -135,7 +141,7 @@ const MessageInput = () => (
   />
 );
 
-function Page() {
+function Page({chat}: {chat: any}) {
   const messageData: Message[] = [
     {
       user: {
@@ -173,10 +179,32 @@ function Page() {
     },
   ];
 
+  if(!chat) {
+    return (
+    <article className="h-full flex flex-col justify-center items-center w-full">
+      <article className="flex flex-col gap-2 justify-center items-center text-center">
+        <Box className="text-slate-400" strokeWidth={1} size={100} />
+        <h2 className="text-xl font-semibold">There's nothing here</h2>
+
+        <article className="flex flex-col text-slate-400">
+          <p>I'm bored, are you ?</p>
+          <Button asChild>
+            <Link className="" href="#">
+              Let's start a new chat
+            </Link>
+          </Button>
+        </article>
+      </article>
+    </article>
+    )
+  }
+
+  const messages = chat.filter((message: any) => message.sender = "user");
+
   return (
     <article className="h-full flex flex-col justify-between w-2/3">
       <Header />
-      <Messages messageData={messageData} />
+      <Messages messageData={messages} />
       <MessageInput />
     </article>
   );
