@@ -26,7 +26,7 @@ export default async function RootLayout({
         <script src="https://cdn.lordicon.com/lordicon.js"></script>
       </head>
       <body
-        className={`${poppins.className} antialiased`}
+        className={`${poppins.className} antialiased h-screen w-screen overflow-hidden`}
       >
         {children}
       </body>

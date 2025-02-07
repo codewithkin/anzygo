@@ -12,7 +12,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="p-4 rounded-xl flex flex-col items-center justify-between h-screen">
+    <aside className="p-2 rounded-xl flex flex-col items-center justify-between h-screen">
       {/* App Icon */}
       <Image
         src="/images/brand/icon.png"

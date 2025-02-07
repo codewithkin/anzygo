@@ -16,6 +16,7 @@ const LeftBar = () => {
                content: "Hello, how are you?",
                time: new Date() - 2 * 60 * 1000 //5 minutes ago
            },
+           active: true,
            profilePicture: "/images/kin.jpg"
        },
        {
@@ -58,7 +59,7 @@ const LeftBar = () => {
                     chats.map((chat) => (
                         <article
                             key={chat.id}
-                            className="flex gap-4 items-center p-2 rounded-xl"
+                            className={`flex gap-4 items-center p-2 rounded-xl hover:cursor-pointer transition-all duration-500 hover:bg-gray-200 ${chat.active && "bg-slate-200"}`}
                         >
                                 <Avatar 
                                     className="w-12 h-12 text-sm"

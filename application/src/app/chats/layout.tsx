@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function ChatsLayout({children}: {children: ReactNode}) {
   return (
-    <section className="flex bg-slate-800 h-screen w-screen md:flex-row flex-col">
+    <section className="flex bg-slate-800 h-screen w-screen overflow-hidden md:flex-row flex-col">
         <Sidebar />
         {children}
     </section>
