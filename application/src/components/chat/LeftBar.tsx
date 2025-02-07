@@ -6,42 +6,8 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
-const LeftBar = () => {
-    // Dummy chats
-    const chats = [
-       {
-           id: 1,
-           name: "John Doe",
-           lastMessage: {
-               content: "Hello, how are you?",
-               time: new Date() - 2 * 60 * 1000 //5 minutes ago
-           },
-           active: true,
-           profilePicture: "/images/kin.jpg"
-       },
-       {
-        id: 2,
-        name: "Jane Doe",
-        lastMessage: {
-            content: "Hey there Kin, you still up for tomorrow ?",
-            time: new Date() - 20 * 60 * 1000 //20 minutes ago
-        },
-        profilePicture: "/images/ki.jpg"
-        },
-        {
-            id: 3,
-            name: "Bob Smith",
-            lastMessage: {
-                content: "You'll have it by Friday, Promise.",
-                time: new Date() - 40 * 60 * 1000 //40 minutes ago
-            },
-            profilePicture: "/images/morty.jpeg"
-        }
-    ]
-
-  return (
-    <article className="h-full w-1/4">
-        {/* SearchBar */}
+const SearchBar = () => {
+    return (
         <Input 
             className="max-w-[300px]"
             classNames={{
@@ -51,54 +17,71 @@ const LeftBar = () => {
             placeholder="Search"
             type="search"
         />
+    )
+}
 
-        {/* Chats List */}
-        <article className="flex flex-col gap-2 my-4">
-            {
-                chats.length > 0 ? 
-                    chats.map((chat) => (
-                        <article
-                            key={chat.id}
-                            className={`flex gap-4 items-center p-2 rounded-xl hover:cursor-pointer transition-all duration-500 hover:bg-gray-200 ${chat.active && "bg-slate-200"}`}
-                        >
-                                <Avatar 
-                                    className="w-12 h-12 text-sm"
-                                    showFallback
-                                    isBordered
-                                    color="default"
-                                    name={chat.name}
-                                    radius="full"
-                                    src={chat.profilePicture}
-                                />
+const ChatCard = ({chat}: {chat: any}) => {
+    return (
+        <article
+            className={`flex gap-4 items-center p-2 rounded-xl hover:cursor-pointer transition-all duration-500 hover:bg-gray-200 ${chat.active && "bg-slate-200"}`}
+        >
+            <Avatar 
+                className="w-12 h-12 text-sm"
+                showFallback
+                isBordered
+                color="default"
+                name={chat.name}
+                src={chat.profilePicture}
+            />
 
-                                <article>
-                                    <h3 className="text-md font-medium">{chat.name}</h3>
-                                    <p className="text-primary text-regular text-xs">{chat.lastMessage.content.substring(0, 20).concat("...")}</p>
-                                </article>
-                        </article>
-                    ))
-                :
-                <article className="flex flex-col jusitfy-center items-center gap-4 w-full h-full">
-                    <Image
-                        src="/images/illustrations/astronaut.jpg"
-                        width={200}
-                        height={500}
-                        alt="No chats found image"
-                    />
-
-                    <article className="flex flex-col gap-2">
-                        <h4 className="text-xl text-slate-400">Sorry, no chats found</h4>
-                        <Button className="transition duration-300 hover:bg-slate-400 hover:text-slate-800" asChild>
-                            <Link href="#">
-                                New Chat
-                            </Link>
-                        </Button>
-                    </article>
-                </article>
-            }
+            <article>
+                <h3 className="text-md font-medium">{chat.name}</h3>
+                <p className="text-primary text-regular text-xs">{chat.lastMessage.content.substring(0, 20).concat("...")}</p>
+            </article>
         </article>
-    </article>
-  )
+    )
+}
+
+const NoChatsFound = () => {
+    return (
+        <article className="flex flex-col jusitfy-center items-center gap-4 w-full h-full">
+            <Image
+                src="/images/illustrations/astronaut.jpg"
+                width={200}
+                height={500}
+                alt="No chats found image"
+            />
+
+            <article className="flex flex-col gap-2">
+                <h4 className="text-xl text-slate-400">Sorry, no chats found</h4>
+                <Button className="transition duration-300 hover:bg-slate-400 hover:text-slate-800" asChild>
+                    <Link href="#">
+                        New Chat
+                    </Link>
+                </Button>
+            </article>
+        </article>
+    )
+}
+
+const LeftBar = ({chats}: { chats: any }) => {
+    return (
+        <article className="h-full w-1/3">
+            <SearchBar />
+
+            <article className="flex flex-col gap-2 my-4">
+                {
+                    chats.length > 0 ? 
+                        chats.map((chat: any) => (
+                            <ChatCard key={chat.id} chat={chat} />
+                        ))
+                    :
+                    <NoChatsFound />
+                }
+            </article>
+        </article>
+    )
 }
 
 export default LeftBar;
+

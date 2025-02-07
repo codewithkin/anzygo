@@ -3,6 +3,37 @@ import Page from "@/components/chat/Page";
 import ChatInfo from "@/components/chat/ChatInfo";
 
 export default function Chats() {
+  const chats = [
+    {
+        id: 1,
+        name: "John Doe",
+        lastMessage: {
+            content: "Hello, how are you?",
+            time: new Date() - 2 * 60 * 1000 //5 minutes ago
+        },
+        active: true,
+        profilePicture: "/images/kin.jpg"
+    },
+    {
+     id: 2,
+     name: "Jane Doe",
+     lastMessage: {
+         content: "Hey there Kin, you still up for tomorrow ?",
+         time: new Date() - 20 * 60 * 1000 //20 minutes ago
+     },
+     profilePicture: "/images/ki.jpg"
+     },
+     {
+         id: 3,
+         name: "Bob Smith",
+         lastMessage: {
+             content: "You'll have it by Friday, Promise.",
+             time: new Date() - 40 * 60 * 1000 //40 minutes ago
+         },
+         profilePicture: "/images/morty.jpeg"
+     }
+ ]
+
   return (
     <article className="flex h-full flex-col p-4 w-full">
       {/* Chats list, chat page + Chat details */}
@@ -10,7 +41,7 @@ export default function Chats() {
         {/* Chats list, chat page */}
         <article className="rounded-xl bg-white p-4 min-w-[400px] w-full h-full flex gap-8 items-center">
           {/* Searchbar and chat list */}
-          <LeftBar />
+          <LeftBar chats={chats} />
 
           {/* Chat Page */}
           <Page />

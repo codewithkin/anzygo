@@ -1,11 +1,14 @@
 import { PictureInPicture2, ChevronDown, Video, File, Link, Music, Mic } from "lucide-react";
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { Avatar } from "@heroui/avatar";
 
 export default function ChatInfo() {
+    const people: {avatar: string, name: string}[] = [{avatar: "/images/kin.jpg", name: "Kin"}, {avatar: "/images/mouse.jpg", name: "John Doe"}]
+
   return (
     <article className="flex flex-col gap-2 max-w-[300px] text-slate-800 font-semibold">
-      <Card>
+      <Card className="max-h-[300px] overflow-y-scroll">
         <CardHeader className="w-full items-center justify-between">
           <CardTitle>Chat Info</CardTitle>
         </CardHeader>
@@ -99,6 +102,28 @@ export default function ChatInfo() {
               </article>
             </article>
           </article>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-primary text-white">
+        <CardHeader>
+           <CardTitle>People in this conversation</CardTitle> 
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-2">
+            {
+                people.map((person: { avatar: string, name: string }) => (
+                    <article className="flex gap-2 items-center" key={person.name}>
+                        <Avatar
+                            src={person.avatar} 
+                            radius="sm"
+                            name={person.name}
+                        />
+
+                        <h2 className="text-sm font-semibold">{person.name}</h2>
+                    </article>
+                ))
+            }
         </CardContent>
       </Card>
     </article>
