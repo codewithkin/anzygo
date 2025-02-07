@@ -91,13 +91,14 @@ function Page() {
         <Header />
 
         {/* Messages */}
-        <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll py-4">
+        <article
+        className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll py-4">
           {
             messageData.length > 0 ?
             messageData.map((message: Message) => {
               return (
                 <article key={message.message} className={`flex flex-col gap-1 w-full ${message.user.name === "Kin Leon Zinzombe" && "items-end"}`}>
-                    <p className={` ${message.user.name === "Kin Leon Zinzombe" ? "bg-primary text-white rounded-tr-xl rounded-tl-xl rounded-bl-xl" : "bg-gray-200 rounded-tr-xl rounded-tl-xl rounded-br-xl"} text-sm p-4 max-w-[600px]`}>{message.message}</p>
+                    <p className={` ${message.user.name === "Kin Leon Zinzombe" ? "bg-primary text-white rounded-tr-xl rounded-tl-xl rounded-bl-xl" : "bg-gray-200 rounded-tr-xl rounded-tl-xl rounded-br-xl"} text-sm p-4 max-w-[400px]`}>{message.message}</p>
                     <p className="text-slate-400 text-xs flex w-fit gap-2">
                   {
                     message.user.name === "Kin Leon Zinzombe" ?

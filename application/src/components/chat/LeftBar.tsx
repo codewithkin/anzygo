@@ -67,7 +67,7 @@ const LeftBar = () => {
                                     isBordered
                                     color="default"
                                     name={chat.name}
-                                    radius="lg"
+                                    radius="full"
                                     src={chat.profilePicture}
                                 />
 
