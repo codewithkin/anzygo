@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "name" SET DEFAULT '',
+ALTER COLUMN "image" SET DEFAULT '/images/user',
+ALTER COLUMN "bio" SET DEFAULT '',
+ALTER COLUMN "status" SET DEFAULT 'Away',
+ALTER COLUMN "theme" SET DEFAULT 'Default';

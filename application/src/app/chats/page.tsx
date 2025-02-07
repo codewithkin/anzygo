@@ -1,8 +1,10 @@
 import LeftBar from "@/components/chat/LeftBar";
 import Page from "@/components/chat/Page";
 import ChatInfo from "@/components/chat/ChatInfo";
+import { auth } from "@/auth";
+import { getUser } from "@/lib/actions";
 
-export default function Chats() {
+export default async function Chats() {
   const chats = [
     {
         id: 1,
@@ -33,6 +35,14 @@ export default function Chats() {
          profilePicture: "/images/morty.jpeg"
      }
  ]
+
+ const session = await auth();
+
+ if(!session) return;
+
+ const user = await getUser(session?.user?.email);
+
+ console.log("User: ", user);
 
   return (
     <article className="flex h-full flex-col p-4 w-full">
