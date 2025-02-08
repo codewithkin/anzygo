@@ -15,6 +15,8 @@ import { Input } from "@heroui/input";
 import { Search } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { 
+  QueryClient,
+  QueryClientProvider,
   useQuery
 } from "@tanstack/react-query"
 import getData from "@/helpers/queries/getData";
@@ -43,6 +45,7 @@ export default function NewChatModal() {
   return (
       <Dialog onOpenChange={() => router.back()} open={true}>
         <DialogContent>
+          <DialogTitle>Start a new chat</DialogTitle>
           <DialogHeader>
             <Input
               startContent={<Search className="text-primary" size={20} strokeWidth={1} />}
@@ -56,6 +59,7 @@ export default function NewChatModal() {
 
           <article className="flex flex-col gap-2">
             <Label>Public Users</Label>
+            
             <article className="flex flex-col gap-2">
             </article>
           </article>

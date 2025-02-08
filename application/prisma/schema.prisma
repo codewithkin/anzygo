@@ -12,11 +12,11 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   public        Boolean   @default(true)
-  name          String?   @default("")// Optional, user can set it later
-  image         String?   @default("/images/user") // Optional, profile picture
-  bio           String?   @default("") // Optional, short user bio
-  status        String?   @default("Away") // Optional, e.g., "Online", "Away"
-  theme         String?   @default("Default")// Optional, user-selected theme
+  name          String   @default(uuid())// Optional, user can set it later
+  image         String   @default("/images/user") // Optional, profile picture
+  bio           String   @default("") // Optional, short user bio
+  status        String   @default("Away") // Optional, e.g., "Online", "Away"
+  theme         String   @default("Default")// Optional, user-selected theme
   settings      Json? // Optional, stores user preferences
 
   accounts      Account[]

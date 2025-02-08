@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
+    // Delete everything
+    await prisma.user.deleteMany();
+
     // Get all public users
     const users = await prisma.user.findMany({
       where: {
