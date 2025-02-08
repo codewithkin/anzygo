@@ -102,12 +102,14 @@ export default function Sidebar() {
       </ul>
 
       <Button
-        onClick={async () => await logOut}
+        asChild
         className="text-xs flex flex-col justify-center items-center hover:bg-slate-600 hover:text-slate-800 transition-all duration-300 px-4 py-8 rounded-xl"
         type="button"
       >
-        <DoorOpen size={20} />
-        Log Out
+        <Link href="/auth/logout">
+          <DoorOpen size={20} />
+          Log Out
+        </Link>
       </Button>
     </aside>
   );

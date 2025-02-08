@@ -73,7 +73,7 @@ const LeftBar = ({ chats }: { chats: any }) => {
       <SearchBar />
 
       <article className="flex flex-col gap-2 my-4">
-        {chats.length > 0 ? (
+        {chats ? (
           chats.map((chat: any) => <ChatCard key={chat.id} chat={chat} />)
         ) : (
           <NoChatsFound />

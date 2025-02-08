@@ -8,14 +8,18 @@ import Link from "next/link";
 export default async function Chats() {
   const session = await auth();
 
-  if (!session) return;
+  if (!session)
+    return (
+      <article className="flex flex-col gap-4 items-center justify-center w-full h-full">
+        <h1 className="text-2xl text-slate-400">You are not logged in</h1>
+        <Link href="/auth">Login</Link>
+      </article>
+    );
 
   const user = await getUser(session?.user?.email);
 
   // Get the user's chats
   const chats = user?.chats;
-
-  if (!chats) return null;
 
   let selectedChat;
 
