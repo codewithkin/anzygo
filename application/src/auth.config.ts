@@ -1,8 +1,9 @@
-import type { NextAuthConfig } from "next-auth"
-import Nodemailer from "next-auth/providers/nodemailer"
-import { sendVerificationRequest } from "./helpers/auth/sendVerficiationEmail"
- 
-export default { providers: [
+import type { NextAuthConfig } from "next-auth";
+import Nodemailer from "next-auth/providers/nodemailer";
+import { sendVerificationRequest } from "./helpers/auth/sendVerficiationEmail";
+
+export default {
+  providers: [
     Nodemailer({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
@@ -13,12 +14,13 @@ export default { providers: [
         },
       },
       from: process.env.EMAIL_FROM,
-      sendVerificationRequest: async (params) => sendVerificationRequest(params),
-    })
-],
-pages: {
-  signIn: "/auth",
-  verifyRequest: "/auth/verify",
-  error: "/auth/error"
-}
-} satisfies NextAuthConfig
+      sendVerificationRequest: async (params) =>
+        sendVerificationRequest(params),
+    }),
+  ],
+  pages: {
+    signIn: "/auth",
+    verifyRequest: "/auth/verify",
+    error: "/auth/error",
+  },
+} satisfies NextAuthConfig;

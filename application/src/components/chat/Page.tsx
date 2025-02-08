@@ -15,7 +15,11 @@ import {
 import { Button } from "../ui/button";
 import Link from "next/link";
 
-const StatusIndicator = ({ status }: { status: "online" | "offline" | "typing" }) => (
+const StatusIndicator = ({
+  status,
+}: {
+  status: "online" | "offline" | "typing";
+}) => (
   <article className="flex gap-1 items-center">
     <article
       className={`w-2 h-2 rounded-full ${
@@ -42,9 +46,18 @@ const StatusIndicator = ({ status }: { status: "online" | "offline" | "typing" }
 
 const Tools = () => (
   <article className="flex gap-4 items-center">
-    <Search strokeWidth={1} className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300" />
-    <Phone strokeWidth={1} className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300" />
-    <MoreHorizontal strokeWidth={1} className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300" />
+    <Search
+      strokeWidth={1}
+      className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
+    />
+    <Phone
+      strokeWidth={1}
+      className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
+    />
+    <MoreHorizontal
+      strokeWidth={1}
+      className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
+    />
   </article>
 );
 
@@ -131,7 +144,9 @@ const MessageInput = () => (
       input: "bg-primary ",
     }}
     placeholder="Say something..."
-    startContent={<Paperclip className="text-slate-400" size={20} strokeWidth={1} />}
+    startContent={
+      <Paperclip className="text-slate-400" size={20} strokeWidth={1} />
+    }
     endContent={
       <article className="flex items-center gap-2">
         <Mic className="text-slate-400" size={20} strokeWidth={1} />
@@ -141,7 +156,7 @@ const MessageInput = () => (
   />
 );
 
-function Page({chat}: {chat: any}) {
+function Page({ chat }: { chat: any }) {
   const messageData: Message[] = [
     {
       user: {
@@ -160,7 +175,8 @@ function Page({chat}: {chat: any}) {
         name: "Jin Mori",
         avatar: "/images/jin.jpg",
       },
-      message: "Seriously though, please don't start a new side project this weekend. I beg of you",
+      message:
+        "Seriously though, please don't start a new side project this weekend. I beg of you",
       metadata: {
         sendTime: "09:21",
         seen: 0,
@@ -171,7 +187,8 @@ function Page({chat}: {chat: any}) {
         name: "Kin Leon Zinzombe",
         avatar: "/images/kin.jpg",
       },
-      message: "No promises lol. Actually scratch that, I will NOT follow that advice. SIDE PROJECTS RULE !!!",
+      message:
+        "No promises lol. Actually scratch that, I will NOT follow that advice. SIDE PROJECTS RULE !!!",
       metadata: {
         sendTime: "09:21",
         seen: 0,
@@ -179,27 +196,27 @@ function Page({chat}: {chat: any}) {
     },
   ];
 
-  if(!chat) {
+  if (!chat) {
     return (
-    <article className="h-full flex flex-col justify-center items-center w-full">
-      <article className="flex flex-col gap-2 justify-center items-center text-center">
-        <Box className="text-slate-400" strokeWidth={1} size={100} />
-        <h2 className="text-xl font-semibold">There's nothing here</h2>
+      <article className="h-full flex flex-col justify-center items-center w-full">
+        <article className="flex flex-col gap-2 justify-center items-center text-center">
+          <Box className="text-slate-400" strokeWidth={1} size={100} />
+          <h2 className="text-xl font-semibold">There's nothing here</h2>
 
-        <article className="flex flex-col text-slate-400">
-          <p>I'm bored, are you ?</p>
-          <Button asChild>
-            <Link className="" href="/chats/new">
-              Let's start a new chat
-            </Link>
-          </Button>
+          <article className="flex flex-col text-slate-400">
+            <p>I'm bored, are you ?</p>
+            <Button asChild>
+              <Link className="" href="/chats/new">
+                Let's start a new chat
+              </Link>
+            </Button>
+          </article>
         </article>
       </article>
-    </article>
-    )
+    );
   }
 
-  const messages = chat.filter((message: any) => message.sender = "user");
+  const messages = chat.filter((message: any) => (message.sender = "user"));
 
   return (
     <article className="h-full flex flex-col justify-between w-2/3">
@@ -211,4 +228,3 @@ function Page({chat}: {chat: any}) {
 }
 
 export default Page;
-

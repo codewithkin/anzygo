@@ -1,6 +1,11 @@
 import { createTransport } from "nodemailer";
 
-export async function sendVerificationRequest(params: { identifier: string; url: string; provider: any; theme: Theme }) {
+export async function sendVerificationRequest(params: {
+  identifier: string;
+  url: string;
+  provider: any;
+  theme: Theme;
+}) {
   const { identifier, url, provider, theme } = params;
   const { host } = new URL(url);
   const transport = createTransport(provider.server);

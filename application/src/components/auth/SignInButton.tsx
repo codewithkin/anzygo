@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button"
-import { useFormStatus } from "react-dom"
+import { Button } from "@/components/ui/button";
+import { useFormStatus } from "react-dom";
 import { Loader2 } from "lucide-react";
 
 export function SignInButton() {
@@ -23,5 +23,5 @@ export function SignInButton() {
         <span>Sign in | Sign up</span>
       )}
     </Button>
-  )
+  );
 }

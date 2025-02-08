@@ -1,11 +1,11 @@
-import { motion } from "framer-motion"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { motion } from "framer-motion";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const variants = {
   initial: { opacity: 0, x: -20 },
   enter: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: 20 },
-}
+};
 
 export const Avatars = () => {
   return (
@@ -37,6 +37,5 @@ export const Avatars = () => {
         </article>
       </article>
     </motion.div>
-  )
-}
-
+  );
+};

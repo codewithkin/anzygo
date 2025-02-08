@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { motion } from "framer-motion";
 import { Avatars } from "./Decorations/Avatars";
 
@@ -15,11 +15,9 @@ export const RightContent = () => {
         opacity: 1,
         display: "block",
       }}
-
       transition={{
         duration: 0.3,
       }}
-
       className="bg-primary p-8 md:p-16"
     >
       <Avatars />
@@ -34,14 +32,12 @@ export const RightContent = () => {
             opacity: 0,
             display: "none",
           }}
-          
           animate={{
             width: "300px",
             height: "300px",
             opacity: 1,
             display: "flex",
           }}
-
           transition={{
             delay: 0.3,
             duration: 0.4,
@@ -77,4 +73,3 @@ export const RightContent = () => {
     </motion.article>
   );
 };
-

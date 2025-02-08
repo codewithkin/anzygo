@@ -22,7 +22,7 @@ export default function NewChatModal() {
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px]">
         <h2 className="text-lg font-bold mb-4">Page Version</h2>
         <p>Enter details for your new chat.</p>
-        <button 
+        <button
           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
           onClick={() => router.back()}
         >

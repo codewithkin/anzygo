@@ -8,7 +8,7 @@ import { headers } from "next/headers";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-})
+});
 
 export const metadata: Metadata = {
   title: "Anzygo: Communication - reimagined",
@@ -25,7 +25,6 @@ export default async function RootLayout({
       <head>
         <script src="https://cdn.lordicon.com/lordicon.js"></script>
         {/* Favicon file */}
-        
       </head>
       <body
         className={`${poppins.className} antialiased h-screen w-screen overflow-hidden`}
