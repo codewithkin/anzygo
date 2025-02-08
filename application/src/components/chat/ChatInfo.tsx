@@ -3,12 +3,12 @@ import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Avatar } from "@heroui/avatar";
 
-export default function ChatInfo() {
-    const people: {avatar: string, name: string}[] = [{avatar: "/images/kin.jpg", name: "Kin"}, {avatar: "/images/mouse.jpg", name: "John Doe"}]
+export default function ChatInfo({chat}: {chat: any}) {
+  const people = []
 
-  return (
+  return chat && (
     <article className="flex flex-col gap-2 max-w-[300px] text-slate-800 font-semibold">
-      <Card className="max-h-[300px] overflow-y-scroll">
+      <Card className="max-h-[300px] min-w-[300px] overflow-y-scroll">
         <CardHeader className="w-full items-center justify-between">
           <CardTitle>Chat Info</CardTitle>
         </CardHeader>
@@ -27,27 +27,16 @@ export default function ChatInfo() {
                 </article>
 
                 <article className="flex gap-2 items-center w-full overflow-x-scroll">
-                  <Image
-                    className="rounded-xl"
-                    src="/images/kin.jpg"
-                    width={200}
-                    height={80}
-                    alt="Image"
-                  />
-                  <Image
-                    className="rounded-xl"
-                    src="/images/toast.jpg"
-                    width={200}
-                    height={80}
-                    alt="Image"
-                  />
-                  <Image
-                    className="rounded-xl"
-                    src="/images/mouse.jpg"
-                    width={200}
-                    height={80}
-                    alt="Image"
-                  />
+                  {
+                    people.length > 0 &&
+                    <Image
+                      className="rounded-xl"
+                      src="/images/mouse.jpg"
+                      width={200}
+                      height={80}
+                      alt="Image"
+                    /> 
+                  }
                 </article>
               </article>
 

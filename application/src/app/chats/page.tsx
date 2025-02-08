@@ -32,8 +32,10 @@ export default async function Chats() {
         </article>
 
         {/* Chats details */}
-        <ChatInfo />
+        <ChatInfo chat={selectedChat} />
       </article>
     </article>
   );
 }
+
+export const dynamic = "force-dynamic";
