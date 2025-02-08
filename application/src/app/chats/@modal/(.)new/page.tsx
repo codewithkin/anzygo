@@ -14,6 +14,10 @@ import {
 import { Input } from "@heroui/input";
 import { Search } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { 
+  useQuery
+} from "@tanstack/react-query"
+import getData from "@/helpers/queries/getData";
 
 export default function NewChatModal() {
   const router = useRouter();
@@ -29,26 +33,33 @@ export default function NewChatModal() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [router]);
 
-  return (
-    <Dialog onOpenChange={() => router.back()} open={true}>
-      <DialogContent>
-        <DialogHeader>
-          <Input
-            startContent={<Search className="text-primary" size={20} strokeWidth={1} />}
-            className=""
-            classNames={{
-              input: "placeholder:font-regular"
-            }}
-            placeholder="Search for someone..."
-          />
-        </DialogHeader>
+  const { data } = useQuery({
+    queryKey: ["publicUsers"],
+    queryFn: async () => await getData(`/api/community/users`)
+  })
 
-        <article className="flex flex-col gap-2">
-          <Label>Public Users</Label>
+  console.log("Public users: ", data)
+
+  return (
+      <Dialog onOpenChange={() => router.back()} open={true}>
+        <DialogContent>
+          <DialogHeader>
+            <Input
+              startContent={<Search className="text-primary" size={20} strokeWidth={1} />}
+              className=""
+              classNames={{
+                input: "placeholder:font-regular"
+              }}
+              placeholder="Search for someone..."
+            />
+          </DialogHeader>
+
           <article className="flex flex-col gap-2">
+            <Label>Public Users</Label>
+            <article className="flex flex-col gap-2">
+            </article>
           </article>
-        </article>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
   );
 }

@@ -20,6 +20,7 @@
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.1",
+    "@tanstack/react-query": "^5.66.0",
     "@types/date-fns": "^2.5.3",
     "@types/nodemailer": "^6.4.17",
     "axios": "^1.7.9",

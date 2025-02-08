@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
+import QueryProvider from "@/providers/QueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,11 +24,13 @@ export default async function RootLayout({
         <script src="https://cdn.lordicon.com/lordicon.js"></script>
         {/* Favicon file */}
       </head>
-      <body
-        className={`${poppins.className} antialiased h-screen w-screen overflow-hidden`}
-      >
-        {children}
-      </body>
+      <QueryProvider>
+        <body
+          className={`${poppins.className} antialiased h-screen w-screen overflow-hidden`}
+        >
+          {children}
+        </body>
+      </QueryProvider>
     </html>
   );
 }
