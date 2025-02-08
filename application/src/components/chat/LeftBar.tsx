@@ -55,7 +55,7 @@ const NoChatsFound = () => {
             <article className="flex flex-col gap-2 text-center">
                 <h4 className="text-xl text-slate-400">Sorry, no chats found</h4>
                 <Button className="transition duration-300 hover:bg-slate-400 hover:text-slate-800" asChild>
-                    <Link href="#">
+                    <Link href="/chats/new">
                         New Chat
                     </Link>
                 </Button>

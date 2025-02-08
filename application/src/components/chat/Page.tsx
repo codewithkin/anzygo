@@ -189,7 +189,7 @@ function Page({chat}: {chat: any}) {
         <article className="flex flex-col text-slate-400">
           <p>I'm bored, are you ?</p>
           <Button asChild>
-            <Link className="" href="#">
+            <Link className="" href="/chats/new">
               Let's start a new chat
             </Link>
           </Button>
