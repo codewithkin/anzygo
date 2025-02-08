@@ -3,6 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+
 export default function NewChatModal() {
   const router = useRouter();
 
@@ -18,23 +28,16 @@ export default function NewChatModal() {
   }, [router]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] z-50">
-        <h2 className="text-lg font-semibold mb-4">Start a New Chat</h2>
-        
-        <inputk
-          type="text"
-          placeholder="Enter username..."
-          className="w-full p-2 border border-gray-300 rounded mb-4"
-        />
-
-        <div className="flex justify-end gap-2">
-          <button onClick={() => router.back()} className="bg-gray-200 p-2 rounded">
-            Cancel
-          </button>
-          <button className="bg-primary text-white p-2 rounded">Page version</button>
-        </div>
-      </div>
-    </div>
+    <Dialog onOpenChange={() => router.back()} open={true}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you absolutely sure?</DialogTitle>
+      <DialogDescription>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
   );
 }
