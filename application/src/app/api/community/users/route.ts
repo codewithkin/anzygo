@@ -6,13 +6,20 @@ export async function GET(request: NextRequest) {
     // Delete everything
     await prisma.user.deleteMany();
 
-    // Create dummy users 
+    // Create dummy users
     await prisma.user.create({
       data: {
         email: "kinzdj,df",
-        name: "Kin test"
-      }
-    }) 
+        name: "Kin test",
+      },
+    });
+
+    await prisma.user.create({
+      data: {
+        email: ",df",
+        name: "Kin test2",
+      },
+    });
 
     // Get all public users
     const users = await prisma.user.findMany({

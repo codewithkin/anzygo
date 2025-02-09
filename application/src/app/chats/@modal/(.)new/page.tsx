@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@heroui/input";
-import { Search } from "lucide-react";
+import { PlusCircle, Search, SendHorizonal } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import {
   QueryClient,
@@ -21,6 +21,8 @@ import {
 } from "@tanstack/react-query";
 import getData from "@/helpers/queries/getData";
 import { Avatar } from "@heroui/avatar";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function NewChatModal() {
   const router = useRouter();
@@ -63,24 +65,33 @@ export default function NewChatModal() {
         <article className="flex flex-col gap-4">
           <Label>Public Users</Label>
 
-          <article className="flex flex-col gap-2">
+          <article className="flex flex-col gap-4">
             {data?.data ? (
               data?.data?.map((user: any) => (
-                <article key={user.id} className="flex gap-2 items-center">
-                  <Avatar
-                    className="w-12 h-12 text-sm"
-                    showFallback
-                    isBordered
-                    color="default"
-                    name={user.name}
-                    src={user.profilePicture}
-                  />
-                  <article>
-                    <h3 className="text-md font-medium">{user.name}</h3>
-                    <p className="text-primary text-regular text-xs">
-                      {user.email}
-                    </p>
+                <article key={user.id} className="w-full flex items-center justify-between">
+                  <article  className="flex gap-4 items-center">
+                    <Avatar
+                      className="w-12 h-12 text-sm"
+                      showFallback
+                      isBordered
+                      color="default"
+                      name={user.name}
+                      src={user.image}
+                    />
+                    <article>
+                      <h3 className="text-md font-medium">{user.name}</h3>
+                      <p className="text-primary text-regular text-xs">
+                        {user.email}
+                      </p>
+                    </article>
                   </article>
+
+                  {/* Start a new chat btn */}
+                  <Button asChild className="rounded-full hover:bg-slate-800 text-white">
+                    <Link href={`/chats/new/${user.id}`}>
+                      <PlusCircle size={40} strokeWidth={2} />
+                    </Link>
+                  </Button>
                 </article>
               ))
             ) : (
