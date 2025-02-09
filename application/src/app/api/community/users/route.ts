@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
       data: {
         email: "kinzdj,df",
         name: "Kin test",
+        id: "123"
       },
     });
 

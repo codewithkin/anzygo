@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { ChangeEventHandler, FormEvent, useEffect, useState } from "react";
 
 import {
   Dialog,
@@ -27,6 +27,8 @@ import Link from "next/link";
 export default function NewChatModal() {
   const router = useRouter();
 
+  const [users, setUsers] = useState<null | any>(null);
+
   // Close modal when clicking outside or pressing Escape
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -43,30 +45,80 @@ export default function NewChatModal() {
     queryFn: async () => await getData(`/api/community/users`),
   });
 
-  console.log("Public users: ", data?.data);
+  const searchForUser = (term: string) => {
+    try {
+      console.log(term);
+
+      // Find a user with the search term
+      const filteredUsers = data?.data.filter((user: any) => user.name == term || user.email == term);
+
+      setUsers(filteredUsers);
+
+      console.log("Users searched for: ", users);
+    } catch (e) {
+      console.log("Error while searching for user: ", e);
+    }
+  }
+
 
   return (
     <Dialog onOpenChange={() => router.back()} open={true}>
       <DialogContent>
         <DialogTitle>Start a new chat</DialogTitle>
         <DialogHeader className="mb-4">
-          <Input
-            startContent={
-              <Search className="text-primary" size={20} strokeWidth={1} />
-            }
-            className=""
-            classNames={{
-              input: "placeholder:font-regular",
-            }}
-            placeholder="Search for someone..."
-          />
+          <form className="flex w-full justify-between items-center" onSubmit={(e) => { e.preventDefault(); searchForUser(e.target[0].value)}}>
+            <Input
+              startContent={
+                <Search className="text-primary" size={20} strokeWidth={1} />
+              }
+              className=""
+              classNames={{
+                input: "placeholder:font-regular",
+              }}
+              placeholder="Search for someone..."
+            />
+
+            <Button type="submit" className="bg-primary hover:bg-slate-800 text-white">
+              <Search size={20} />
+            </Button>
+          </form>
         </DialogHeader>
 
         <article className="flex flex-col gap-4">
           <Label>Public Users</Label>
 
           <article className="flex flex-col gap-4">
-            {data?.data ? (
+            {users ? 
+              (
+              users.map((user: any) => (
+                <article key={user.id} className="w-full flex items-center justify-between">
+                  <article  className="flex gap-4 items-center">
+                    <Avatar
+                      className="w-12 h-12 text-sm"
+                      showFallback
+                      isBordered
+                      color="default"
+                      name={user.name}
+                      src={user.image}
+                    />
+                    <article>
+                      <h3 className="text-md font-medium">{user.name}</h3>
+                      <p className="text-primary text-regular text-xs">
+                        {user.email}
+                      </p>
+                    </article>
+                  </article>
+
+                  {/* Start a new chat btn */}
+                  <Button asChild className="rounded-full hover:bg-slate-800 text-white">
+                    <Link href={`/chats/new/${user.id}`}>
+                      <PlusCircle size={40} strokeWidth={2} />
+                    </Link>
+                  </Button>
+                </article>
+              ))
+            )
+            : data?.data ? (
               data?.data?.map((user: any) => (
                 <article key={user.id} className="w-full flex items-center justify-between">
                   <article  className="flex gap-4 items-center">
