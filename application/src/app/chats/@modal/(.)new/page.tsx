@@ -60,7 +60,7 @@ export default function NewChatModal() {
           />
         </DialogHeader>
 
-        <article className="flex flex-col gap-2">
+        <article className="flex flex-col gap-4">
           <Label>Public Users</Label>
 
           <article className="flex flex-col gap-2">
