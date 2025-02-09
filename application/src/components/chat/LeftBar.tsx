@@ -68,12 +68,14 @@ const NoChatsFound = () => {
 };
 
 const LeftBar = ({ chats }: { chats: any }) => {
+  console.log("Chats: ", chats);
+
   return (
     <article className="h-full w-1/3">
       <SearchBar />
 
       <article className="flex flex-col gap-2 my-4">
-        {chats ? (
+        {chats && chats.length > 0 ? (
           chats.map((chat: any) => <ChatCard key={chat.id} chat={chat} />)
         ) : (
           <NoChatsFound />
