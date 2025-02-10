@@ -1,47 +1,20 @@
 "use client";
-
-import { useRouter } from "next/navigation";
-import { ChangeEventHandler, FormEvent, useEffect, useState } from "react";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@heroui/input";
-import { Loader2, PlusCircle, Search, SendHorizonal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
 import getData from "@/helpers/queries/getData";
 import { Avatar } from "@heroui/avatar";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Input } from "@heroui/input";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2, PlusCircle, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
-export default function NewChatModal() {
-  const [open, setOpen] = useState<boolean>(true);
+function page() {
+  const [users, setUsers] = useState<null | any>(null);
 
   const router = useRouter();
 
-  const [users, setUsers] = useState<null | any>(null);
-
   // Close modal when clicking outside or pressing Escape
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        router.back();
-      }
-    };
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [router]);
-
   const { data } = useQuery({
     queryKey: ["publicUsers"],
     queryFn: async () => await getData(`/api/community/users`),
@@ -65,46 +38,51 @@ export default function NewChatModal() {
   };
 
   return (
-    <Dialog onOpenChange={() => router.back()} open={true}>
-      <DialogContent>
-        <DialogTitle>Start a new chat</DialogTitle>
-        <DialogHeader className="mb-4">
-          <form
-            className="flex w-full justify-between items-center"
-            onSubmit={(e) => {
-              e.preventDefault();
-              searchForUser(e.target[0].value);
+    <article className="flex flex-col gap-4 p-4 md:p-8">
+      <h2 className="text-white text-xl">Start a new conversation</h2>
+
+      {/* Searchbar */}
+      <article className="mb-4">
+        <form
+          className="flex w-full justify-between items-center gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            searchForUser(e.target[0].value);
+          }}
+        >
+          <Input
+            startContent={
+              <Search className="text-gray-600" size={20} strokeWidth={1} />
+            }
+            radius="sm"
+            className="md:min-w-[400px]"
+            classNames={{
+              input: "placeholder:font-regular",
             }}
+            placeholder="Search for someone..."
+          />
+
+          <Button
+            type="submit"
+            className="bg-primary hover:bg-slate-500 text-white py-4"
           >
-            <Input
-              startContent={
-                <Search className="text-primary" size={20} strokeWidth={1} />
-              }
-              className=""
-              classNames={{
-                input: "placeholder:font-regular",
-              }}
-              placeholder="Search for someone..."
-            />
+            <Search size={20} />
+          </Button>
+        </form>
+      </article>
 
-            <Button
-              type="submit"
-              className="bg-primary hover:bg-slate-800 text-white"
-            >
-              <Search size={20} />
-            </Button>
-          </form>
-        </DialogHeader>
-
-        <article className="flex flex-col gap-4">
-          {users ? (
+      {/* Public users */}
+      <article className="flex flex-col gap-2">
+        {/* Public users list */}
+        <article className="grid md:grid-cols-3 lg:grid-cols-4 grid-rows-3 md:grid-rows-4">
+        {users ? (
             <article className="flex flex-col gap-4">
-              <Label>Public Users</Label>
+              <Label className="text-white">Public Users</Label>
               
               {users.map((user: any) => (
                 <article
                   key={user.id}
-                  className="w-full flex items-center justify-between"
+                  className="w-full items-center justify-between md:min-w-[300px] flex bg-white p-4 rounded-md"
                 >
                   <article className="flex gap-4 items-center">
                     <Avatar
@@ -117,7 +95,7 @@ export default function NewChatModal() {
                     />
                     <article>
                       <h3 className="text-md font-medium">{user.name}</h3>
-                      <p className="text-primary text-regular text-xs">
+                      <p className="text-gray-600 text-regular text-xs">
                         {user.email}
                       </p>
                     </article>
@@ -134,7 +112,7 @@ export default function NewChatModal() {
 
                       router.back();
                     }}
-                    className="rounded-full hover:bg-slate-800 text-white"
+                    className="rounded-full hover:bg-slate-500 text-white"
                   >
                     <PlusCircle size={40} strokeWidth={2} />
                   </Button>
@@ -143,11 +121,11 @@ export default function NewChatModal() {
             </article>
           ) : data?.data ? (
             <article className="flex flex-col gap-4">
-              <Label>Public Users</Label>
+              <Label className="text-white">Public Users</Label>
               {data?.data?.map((user: any) => (
                 <article
                   key={user.id}
-                  className="w-full flex items-center justify-between"
+                  className="w-full items-center justify-between md:min-w-[300px] flex bg-white p-4 rounded-md"
                 >
                   <article className="flex gap-4 items-center">
                     <Avatar
@@ -160,7 +138,7 @@ export default function NewChatModal() {
                     />
                     <article>
                       <h3 className="text-md font-medium">{user.name}</h3>
-                      <p className="text-primary text-regular text-xs">
+                      <p className="text-gray-600 text-regular text-xs">
                         {user.email}
                       </p>
                     </article>
@@ -177,7 +155,7 @@ export default function NewChatModal() {
 
                       router.back();
                     }}
-                    className="rounded-full hover:bg-slate-800 text-white"
+                    className="rounded-full hover:bg-slate-500 text-white"
                   >
                     <PlusCircle size={40} strokeWidth={2} />
                   </Button>
@@ -186,11 +164,13 @@ export default function NewChatModal() {
             </article>
           ) : (
             <article className="w-full h-full flex flex-col justify-center items-center">
-              <Loader2 size={30} className="animate-spin text-primary" />
+              <Loader2 size={30} className="animate-spin text-gray-200" />
             </article>
           )}
         </article>
-      </DialogContent>
-    </Dialog>
+      </article>
+    </article>
   );
 }
+
+export default page;

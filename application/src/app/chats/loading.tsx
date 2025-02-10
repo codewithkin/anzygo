@@ -4,7 +4,7 @@ function Loading() {
 
 
   return (
-    <section className="w-full h-full flex flex-col justify-center items-center gap-4">
+    <section className="w-screen h-screen flex flex-col justify-center items-center gap-4">
         {/* Loading spinner */}
         <Loader2 className="animate-spin text-primary" size={50} />
 

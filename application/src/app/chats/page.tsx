@@ -6,8 +6,12 @@ import { getUser } from "@/lib/actions";
 import Link from "next/link";
 import Content from "../layouts/Content";
 
-export default async function Chats() {
+export default async function Chats({ searchParams }) {
+  new Promise((resolve, reject) => setTimeout(() => console.log("Hey"), 5000));
+
   const session = await auth();
+
+  // Get the user's id from the query params
 
   if (!session)
     return (
