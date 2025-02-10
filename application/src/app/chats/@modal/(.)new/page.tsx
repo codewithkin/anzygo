@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@heroui/input";
-import { PlusCircle, Search, SendHorizonal } from "lucide-react";
+import { Loader2, PlusCircle, Search, SendHorizonal } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import {
   QueryClient,
@@ -50,7 +50,9 @@ export default function NewChatModal() {
       console.log(term);
 
       // Find a user with the search term
-      const filteredUsers = data?.data.filter((user: any) => user.name == term || user.email == term);
+      const filteredUsers = data?.data.filter(
+        (user: any) => user.name == term || user.email == term,
+      );
 
       setUsers(filteredUsers);
 
@@ -58,15 +60,20 @@ export default function NewChatModal() {
     } catch (e) {
       console.log("Error while searching for user: ", e);
     }
-  }
-
+  };
 
   return (
     <Dialog onOpenChange={() => router.back()} open={true}>
       <DialogContent>
         <DialogTitle>Start a new chat</DialogTitle>
         <DialogHeader className="mb-4">
-          <form className="flex w-full justify-between items-center" onSubmit={(e) => { e.preventDefault(); searchForUser(e.target[0].value)}}>
+          <form
+            className="flex w-full justify-between items-center"
+            onSubmit={(e) => {
+              e.preventDefault();
+              searchForUser(e.target[0].value);
+            }}
+          >
             <Input
               startContent={
                 <Search className="text-primary" size={20} strokeWidth={1} />
@@ -78,21 +85,25 @@ export default function NewChatModal() {
               placeholder="Search for someone..."
             />
 
-            <Button type="submit" className="bg-primary hover:bg-slate-800 text-white">
+            <Button
+              type="submit"
+              className="bg-primary hover:bg-slate-800 text-white"
+            >
               <Search size={20} />
             </Button>
           </form>
         </DialogHeader>
 
         <article className="flex flex-col gap-4">
-          <Label>Public Users</Label>
-
-          <article className="flex flex-col gap-4">
-            {users ? 
-              (
-              users.map((user: any) => (
-                <article key={user.id} className="w-full flex items-center justify-between">
-                  <article  className="flex gap-4 items-center">
+          {users ? (
+            <article className="flex flex-col gap-4">
+              <Label>Public Users</Label>
+              {users.map((user: any) => (
+                <article
+                  key={user.id}
+                  className="w-full flex items-center justify-between"
+                >
+                  <article className="flex gap-4 items-center">
                     <Avatar
                       className="w-12 h-12 text-sm"
                       showFallback
@@ -110,46 +121,61 @@ export default function NewChatModal() {
                   </article>
 
                   {/* Start a new chat btn */}
-                  <Button asChild className="rounded-full hover:bg-slate-800 text-white">
+                  <Button
+                    asChild
+                    className="rounded-full hover:bg-slate-800 text-white"
+                  >
                     <Link href={`/chats/new/${user.id}`}>
                       <PlusCircle size={40} strokeWidth={2} />
                     </Link>
                   </Button>
                 </article>
-              ))
-            )
-            : data?.data ? (
-              data?.data?.map((user: any) => (
-                <article key={user.id} className="w-full flex items-center justify-between">
-                  <article  className="flex gap-4 items-center">
-                    <Avatar
-                      className="w-12 h-12 text-sm"
-                      showFallback
-                      isBordered
-                      color="default"
-                      name={user.name}
-                      src={user.image}
-                    />
-                    <article>
-                      <h3 className="text-md font-medium">{user.name}</h3>
-                      <p className="text-primary text-regular text-xs">
-                        {user.email}
-                      </p>
+              ))}
+            </article>
+          ) : data?.data ? (
+            <article className="flex flex-col gap-4">
+              <Label>Public Users</Label>
+              {
+                data?.data?.map((user: any) => (
+                  <article
+                    key={user.id}
+                    className="w-full flex items-center justify-between"
+                  >
+                    <article className="flex gap-4 items-center">
+                      <Avatar
+                        className="w-12 h-12 text-sm"
+                        showFallback
+                        isBordered
+                        color="default"
+                        name={user.name}
+                        src={user.image}
+                      />
+                      <article>
+                        <h3 className="text-md font-medium">{user.name}</h3>
+                        <p className="text-primary text-regular text-xs">
+                          {user.email}
+                        </p>
+                      </article>
                     </article>
-                  </article>
 
-                  {/* Start a new chat btn */}
-                  <Button asChild className="rounded-full hover:bg-slate-800 text-white">
-                    <Link href={`/chats/new/${user.id}`}>
-                      <PlusCircle size={40} strokeWidth={2} />
-                    </Link>
-                  </Button>
-                </article>
-              ))
-            ) : (
-              <h2 className="text-slate-400">These MFs private AF</h2>
-            )}
-          </article>
+                    {/* Start a new chat btn */}
+                    <Button
+                      asChild
+                      className="rounded-full hover:bg-slate-800 text-white"
+                    >
+                      <Link href={`/chats/new/${user.id}`}>
+                        <PlusCircle size={40} strokeWidth={2} />
+                      </Link>
+                    </Button>
+                  </article>
+                ))
+              }
+            </article>
+          ) : (
+            <article className="w-full h-full flex flex-col justify-center items-center">
+              <Loader2 size={30} className="animate-spin text-primary" />
+            </article>
+          )}
         </article>
       </DialogContent>
     </Dialog>
