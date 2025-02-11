@@ -19,7 +19,7 @@ export const getUser = async () => {
 
   const user = await prisma.user.findUnique({
     where: {
-      id: "cm7090e090013a1mpynucvcix",
+      email,
     },
     include: {
       chats: {
@@ -35,6 +35,8 @@ export const getUser = async () => {
       messages: true,
     },
   });
+
+  console.log("User: ", user);
 
   return user;
 };

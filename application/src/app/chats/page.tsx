@@ -3,11 +3,12 @@
 import LeftBar from "@/components/chat/LeftBar";
 import Page from "@/components/chat/Page";
 import ChatInfo from "@/components/chat/ChatInfo";
-import { createNewChat, getUser } from "@/lib/actions";
+import { getUser } from "@/lib/actions";
 import Content from "../layouts/Content";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createChat } from "@/helpers/queries/createChat";
 
 export default function Chats() {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -19,22 +20,31 @@ export default function Chats() {
   console.log("DATA: ", data);
 
   // Get the user's chats
-  const chats: any | null = [];
+  const chats: any | null = data?.data?.chats || [];
 
   // Get the user id from query params
   const params = useSearchParams();
 
-  const id = params.get("id");
+  const id = params.get("id") || "";
 
-  if (id) {
-    // Make a request to the create new chat endpoint
-    const res = fetch(`/api/community/chats?id=${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
+  // Make a request to the create new chat endpoint
+  const mutation = useMutation({
+    mutationFn: async () => await createChat(id),
+    onSuccess: (data) => {
+      console.log("Data returned when trying to create chat: ", data);
+    },
+    onError: (error) => {
+      console.log("Error while creating chat: ", error);
+    }
+  })
+
+   // Trigger mutation only when `id` changes
+   useEffect(() => {
+    if (id) {
+      mutation.mutate();
+    }
+  }, [id]); 
+
 
   return (
     <Content>

@@ -11,6 +11,7 @@
  */
 
 import { auth } from "@/auth";
+import { getUser } from "@/lib/actions";
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,7 +22,29 @@ export async function POST(request: NextRequest) {
 
     // Check if the user is authenticated, and get the user's id from the session
     const session = await auth();
-    const userId = "cm7090e090013a1mpynucvcix"
+    const userEmail = session?.user?.email || "";
+
+    const user = await getUser();
+
+    const userId = user?.id;
+
+    // Check if there is an existing chat between the users
+    const existingChat = await prisma.chat.findFirst({
+      where: {
+        type: "private",
+        users: {
+          some: {
+            id: id,
+          },
+        },
+      },
+    });
+
+    // If there is an existing chat, return it
+    if(existingChat) {
+      // Redirect to /chats?id=existingChatID
+      return NextResponse.json({ message: "Chat already exists" });
+    }
 
     // Create a new chat in the database (without the users)
     const newChat = await prisma.chat.create({
@@ -30,15 +53,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // et all the users and log them to the console
-    const users = await prisma.user.findMany();
-    console.log("Users: ", users);
-
     // Create a new chatUser for each of the 2 users
     const chatUser1 = await prisma.chatUser.create({
       data: {
-        userId,
-        chatId: newChat.id,
+        chat: {
+          connect: {
+            id: newChat.id
+          }
+        },
+        user: {
+          connect: {
+            id: userId
+          }
+        },
         role: "admin",
       },
     });
@@ -59,8 +86,12 @@ export async function POST(request: NextRequest) {
         data: {
           users: {
             connect: [
-              userId,
-              id,
+              {
+                id: userId
+              },
+              {
+                id
+              }
             ],
           },
         },
