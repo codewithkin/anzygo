@@ -1,6 +1,6 @@
 "use server";
 
-import { signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { prisma } from "@/prisma";
 
 export const logOut = async () => {
@@ -10,8 +10,10 @@ export const logOut = async () => {
 };
 
 // Define an action to get a user based on their email
-export const getUser = async (email: string | null | undefined) => {
-  if (!email) return;
+export const getUser = async () => {
+  const session = await auth();
+
+  const email = session?.user?.email || "";
 
   return await prisma.user.findUnique({
     where: {

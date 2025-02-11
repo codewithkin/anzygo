@@ -107,10 +107,6 @@ function page() {
                     onClick={() => {
                       // Redirect
                       router.push(`/chats/?id=${user.id}`);
-
-                      router.push(`/chats/new`);
-
-                      router.back();
                     }}
                     className="rounded-full hover:bg-slate-500 text-white"
                   >
@@ -150,10 +146,6 @@ function page() {
                     onClick={() => {
                       // Redirect
                       router.push(`/chats/?id=${user.id}`);
-
-                      router.push(`/chats/new`);
-
-                      router.back();
                     }}
                     className="rounded-full hover:bg-slate-500 text-white"
                   >

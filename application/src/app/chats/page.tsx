@@ -1,32 +1,37 @@
+"use client";
 import LeftBar from "@/components/chat/LeftBar";
 import Page from "@/components/chat/Page";
 import ChatInfo from "@/components/chat/ChatInfo";
 import { auth } from "@/auth";
 import { getUser } from "@/lib/actions";
-import Link from "next/link";
 import Content from "../layouts/Content";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-export default async function Chats({ searchParams }) {
-  new Promise((resolve, reject) => setTimeout(() => console.log("Hey"), 5000));
+export default function Chats() {
+  const { data, isPending } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser
+  })
 
-  const session = await auth();
 
-  // Get the user's id from the query params
-
-  if (!session)
-    return (
-      <article className="flex flex-col gap-4 items-center justify-center w-full h-full">
-        <h1 className="text-2xl text-slate-400">You are not logged in</h1>
-        <Link href="/auth">Login</Link>
-      </article>
-    );
-
-  const user = await getUser(session?.user?.email);
+  console.log("DATA: ", data);
 
   // Get the user's chats
-  const chats = user?.chats;
+  const chats: any | null = [];
 
   let selectedChat;
+
+  // Get the user id from query params
+  const params = useSearchParams();
+
+  const id = params.get("id");
+
+  if(id) {
+    // Start a new chat
+
+  }
 
   return (
     <Content>

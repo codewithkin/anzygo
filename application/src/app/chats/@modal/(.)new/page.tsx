@@ -65,7 +65,7 @@ export default function NewChatModal() {
   };
 
   return (
-    <Dialog onOpenChange={() => router.back()} open={true}>
+    <Dialog onOpenChange={() => router.back()} open={open}>
       <DialogContent>
         <DialogTitle>Start a new chat</DialogTitle>
         <DialogHeader className="mb-4">
@@ -130,9 +130,7 @@ export default function NewChatModal() {
                       // Redirect
                       router.push(`/chats/?id=${user.id}`);
 
-                      router.push(`/chats/new`);
-
-                      router.back();
+                      setOpen(false)
                     }}
                     className="rounded-full hover:bg-slate-800 text-white"
                   >
@@ -173,9 +171,7 @@ export default function NewChatModal() {
                       // Redirect
                       router.push(`/chats/?id=${user.id}`);
 
-                      router.push(`/chats/new`);
-
-                      router.back();
+                      setOpen(false)
                     }}
                     className="rounded-full hover:bg-slate-800 text-white"
                   >
