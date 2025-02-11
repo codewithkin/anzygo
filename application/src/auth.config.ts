@@ -23,4 +23,9 @@ export default {
     verifyRequest: "/auth/verify",
     error: "/auth/error",
   },
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      return baseUrl + "/chats"
+    }
+  }
 } satisfies NextAuthConfig;
