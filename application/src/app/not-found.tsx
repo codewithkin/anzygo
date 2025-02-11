@@ -11,7 +11,7 @@ export default function NotFound() {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
       }}
-      className="flex h-screen items-center justify-center"
+      className="flex h-screen items-center justify-center bg-blue-300"
     >
       <article className="text-center">
         <h1
