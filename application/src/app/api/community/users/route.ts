@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     console.log("An error occured while fetching users: ", e);
 
     return NextResponse.json({
-      message: "An error occured"
-    })
+      message: "An error occured",
+    });
   }
 }

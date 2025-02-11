@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     });
 
     // If there is an existing chat, return it
-    if(existingChat) {
+    if (existingChat) {
       // Redirect to /chats?id=existingChatID
       return NextResponse.json({ message: "Chat already exists" });
     }
@@ -58,13 +58,13 @@ export async function POST(request: NextRequest) {
       data: {
         chat: {
           connect: {
-            id: newChat.id
-          }
+            id: newChat.id,
+          },
         },
         user: {
           connect: {
-            id: userId
-          }
+            id: userId,
+          },
         },
         role: "admin",
       },
@@ -80,22 +80,22 @@ export async function POST(request: NextRequest) {
 
     // Add the chat users to the newly created chat
     await prisma.chat.update({
-        where: {
-          id: newChat.id,
+      where: {
+        id: newChat.id,
+      },
+      data: {
+        users: {
+          connect: [
+            {
+              id: userId,
+            },
+            {
+              id,
+            },
+          ],
         },
-        data: {
-          users: {
-            connect: [
-              {
-                id: userId
-              },
-              {
-                id
-              }
-            ],
-          },
-        },
-      });
+      },
+    });
 
     // Log the newly created chat to the console
     console.log(newChat);

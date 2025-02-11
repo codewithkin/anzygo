@@ -1,3 +1,4 @@
+"use client";
 import { formatDistanceToNow } from "date-fns";
 import { Search } from "lucide-react";
 import { Avatar } from "@heroui/avatar";
@@ -5,6 +6,8 @@ import { Input } from "@heroui/input";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getSpecificUser } from "@/lib/actions";
 
 const SearchBar = () => {
   return (
@@ -20,7 +23,30 @@ const SearchBar = () => {
   );
 };
 
-const ChatCard = ({ chat }: { chat: any }) => {
+export interface Chat {
+  createdAt: Date;
+  id: string;
+  image: string | null;
+  name: string | null;
+  type: "private" | "group";
+  updatedAt: Date;
+  users: {
+    user: {
+      id: string;
+      name: string;
+      image: string | null;
+    };
+  }[];
+}
+
+const ChatCard = ({ chat }: { chat: Chat }) => {
+  /* // It seems the "chat" has missing or incomplete information on users
+  // Fetch the particular user's data based on their id
+  const {data} = useQuery({
+    queryKey: ["getSpecificUser"],
+    queryFn: async () => getSpecificUser(chat.users[0].id)
+  }) */
+
   return (
     <article
       className={`flex gap-4 items-center p-2 rounded-xl hover:cursor-pointer transition-all duration-500 hover:bg-gray-200 ${chat.active && "bg-slate-200"}`}
@@ -30,14 +56,15 @@ const ChatCard = ({ chat }: { chat: any }) => {
         showFallback
         isBordered
         color="default"
-        name={chat.name}
-        src={chat.profilePicture}
+        name={chat.users[0].user.name}
+        src={chat.users[0].user.image || "/images/user.png"}
       />
 
       <article>
-        <h3 className="text-md font-medium">{chat.name}</h3>
+        <h3 className="text-md font-medium">{chat.users[0].user.name}</h3>
         <p className="text-primary text-regular text-xs">
-          {chat.lastMessage.content.substring(0, 20).concat("...")}
+          {chat.type}
+          {/* chat.lastMessage.content.substring(0, 20).concat("...") */}
         </p>
       </article>
     </article>
@@ -68,15 +95,13 @@ const NoChatsFound = () => {
 };
 
 const LeftBar = ({ chats }: { chats: any }) => {
-  console.log("Chats: ", chats);
-
   return (
-    <article className="h-full w-1/3">
+    <article className="h-full overflow-y-scroll w-1/3">
       <SearchBar />
 
-      <article className="flex flex-col gap-2 my-4 w-full h-full">
+      <article className="flex flex-col md:gap-8 my-4 w-full h-full">
         {chats && chats.length > 0 ? (
-          chats.map((chat: any) => <ChatCard key={chat.id} chat={chat} />)
+          chats.map((chat: any) => <ChatCard key={chat.id} chat={chat.chat} />)
         ) : (
           <NoChatsFound />
         )}

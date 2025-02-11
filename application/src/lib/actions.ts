@@ -26,17 +26,36 @@ export const getUser = async () => {
         include: {
           chat: {
             include: {
-              users: true
-            }
+              users: {
+                include: {
+                  user: true,
+                },
+              },
+            },
           },
-          user: true
-        }
+          user: true,
+        },
       },
       messages: true,
     },
   });
 
   console.log("User: ", user);
+
+  return user;
+};
+
+export const getSpecificUser = async (id: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      messages: true,
+    },
+  });
+
+  console.log("Specific User user: ", user);
 
   return user;
 };

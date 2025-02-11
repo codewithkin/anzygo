@@ -17,10 +17,8 @@ export default function Chats() {
     queryFn: getUser,
   });
 
-  console.log("DATA: ", data);
-
   // Get the user's chats
-  const chats: any | null = data?.data?.chats || [];
+  const chats: any | null = data?.chats || [];
 
   // Get the user id from query params
   const params = useSearchParams();
@@ -35,16 +33,15 @@ export default function Chats() {
     },
     onError: (error) => {
       console.log("Error while creating chat: ", error);
-    }
-  })
+    },
+  });
 
-   // Trigger mutation only when `id` changes
-   useEffect(() => {
+  // Trigger mutation only when `id` changes
+  useEffect(() => {
     if (id) {
       mutation.mutate();
     }
-  }, [id]); 
-
+  }, [id]);
 
   return (
     <Content>
