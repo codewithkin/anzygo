@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEventHandler, FormEvent, useEffect, useState } from "react";
 
 import {
@@ -25,7 +25,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function NewChatModal() {
-  const [open, setOpen] = useState<boolean>(true);
+  const pathname = usePathname(); // Get the current path
+
+  const open = pathname === "/chats/new"; // Modal should be open only on this path
 
   const router = useRouter();
 
@@ -129,8 +131,6 @@ export default function NewChatModal() {
                     onClick={() => {
                       // Redirect
                       router.push(`/chats/?id=${user.id}`);
-
-                      setOpen(false)
                     }}
                     className="rounded-full hover:bg-slate-800 text-white"
                   >
@@ -170,8 +170,6 @@ export default function NewChatModal() {
                     onClick={() => {
                       // Redirect
                       router.push(`/chats/?id=${user.id}`);
-
-                      setOpen(false)
                     }}
                     className="rounded-full hover:bg-slate-800 text-white"
                   >

@@ -46,7 +46,7 @@ const ChatCard = ({ chat }: { chat: any }) => {
 
 const NoChatsFound = () => {
   return (
-    <article className="flex flex-col jusitfy-center items-center gap-4 w-full h-full">
+    <article className="flex flex-col justify-center items-center gap-4 w-full h-full">
       <Image
         src="/images/illustrations/astronaut.jpg"
         width={200}
@@ -74,7 +74,7 @@ const LeftBar = ({ chats }: { chats: any }) => {
     <article className="h-full w-1/3">
       <SearchBar />
 
-      <article className="flex flex-col gap-2 my-4">
+      <article className="flex flex-col gap-2 my-4 w-full h-full">
         {chats && chats.length > 0 ? (
           chats.map((chat: any) => <ChatCard key={chat.id} chat={chat} />)
         ) : (
