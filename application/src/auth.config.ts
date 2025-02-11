@@ -25,7 +25,7 @@ export default {
   },
   callbacks: {
     async redirect({ url, baseUrl }) {
-      return baseUrl + "/chats"
-    }
-  }
+      return baseUrl + "/chats";
+    },
+  },
 } satisfies NextAuthConfig;

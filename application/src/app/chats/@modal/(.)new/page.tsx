@@ -102,7 +102,7 @@ export default function NewChatModal() {
           {users ? (
             <article className="flex flex-col gap-4">
               <Label>Public Users</Label>
-              
+
               {users.map((user: any) => (
                 <article
                   key={user.id}

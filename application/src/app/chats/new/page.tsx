@@ -65,10 +65,7 @@ function page() {
             placeholder="Search for someone..."
           />
 
-          <Button
-            type="submit"
-            className="bg-primary hover:bg-slate-500 py-4"
-          >
+          <Button type="submit" className="bg-primary hover:bg-slate-500 py-4">
             <Search size={20} />
           </Button>
         </form>
@@ -78,10 +75,10 @@ function page() {
       <article className="flex flex-col gap-2">
         {/* Public users list */}
         <article className="grid md:grid-cols-3 lg:grid-cols-4 grid-rows-3 md:grid-rows-4">
-        {users ? (
+          {users ? (
             <article className="flex flex-col gap-4">
               <Label className="text-white">Public Users</Label>
-              
+
               {users.map((user: any) => (
                 <article
                   key={user.id}

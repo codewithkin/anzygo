@@ -15,13 +15,26 @@ export const getUser = async () => {
 
   const email = session?.user?.email || "";
 
-  return await prisma.user.findUnique({
+  const users = await prisma.user.findMany();
+
+  const user = await prisma.user.findUnique({
     where: {
-      email,
+      id: "cm7090e090013a1mpynucvcix",
     },
     include: {
-      chats: true,
+      chats: {
+        include: {
+          chat: {
+            include: {
+              users: true
+            }
+          },
+          user: true
+        }
+      },
       messages: true,
     },
   });
+
+  return user;
 };

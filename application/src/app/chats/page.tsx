@@ -1,33 +1,39 @@
 "use client";
+
 import LeftBar from "@/components/chat/LeftBar";
 import Page from "@/components/chat/Page";
 import ChatInfo from "@/components/chat/ChatInfo";
-import { getUser } from "@/lib/actions";
+import { createNewChat, getUser } from "@/lib/actions";
 import Content from "../layouts/Content";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export default function Chats() {
+  const [selectedChat, setSelectedChat] = useState(null);
   const { data, isPending } = useQuery({
     queryKey: ["user"],
-    queryFn: getUser
-  })
+    queryFn: getUser,
+  });
 
   console.log("DATA: ", data);
 
   // Get the user's chats
   const chats: any | null = [];
 
-  let selectedChat;
-
   // Get the user id from query params
   const params = useSearchParams();
 
   const id = params.get("id");
 
-  if(id) {
-    // Start a new chat
-
+  if (id) {
+    // Make a request to the create new chat endpoint
+    const res = fetch(`/api/community/chats?id=${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   return (
