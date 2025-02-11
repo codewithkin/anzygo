@@ -3,9 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    // Delete everything
-    await prisma.user.deleteMany();
-
     // Create dummy users
     await prisma.user.create({
       data: {
