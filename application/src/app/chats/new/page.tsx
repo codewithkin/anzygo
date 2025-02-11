@@ -1,4 +1,6 @@
 "use client";
+import Content from "@/app/layouts/Content";
+import WhiteContent from "@/app/layouts/WhiteContent";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import getData from "@/helpers/queries/getData";
@@ -38,13 +40,13 @@ function page() {
   };
 
   return (
-    <article className="flex flex-col gap-4 p-4 md:p-8">
-      <h2 className="text-white text-xl">Start a new conversation</h2>
+    <WhiteContent>
+      <h2 className="text-xl">Start a new conversation</h2>
 
       {/* Searchbar */}
-      <article className="mb-4">
+      <article className="my-4">
         <form
-          className="flex w-full justify-between items-center gap-2"
+          className="flex w-fit items-center gap-2"
           onSubmit={(e) => {
             e.preventDefault();
             searchForUser(e.target[0].value);
@@ -55,16 +57,17 @@ function page() {
               <Search className="text-gray-600" size={20} strokeWidth={1} />
             }
             radius="sm"
-            className="md:min-w-[400px]"
+            className="md:min-w-[600px] md:max-w-[600px] max-w-full min-w-full"
             classNames={{
               input: "placeholder:font-regular",
+              inputWrapper: "bg-blue-200 hover:bg-slate-500",
             }}
             placeholder="Search for someone..."
           />
 
           <Button
             type="submit"
-            className="bg-primary hover:bg-slate-500 text-white py-4"
+            className="bg-primary hover:bg-slate-500 py-4"
           >
             <Search size={20} />
           </Button>
@@ -82,9 +85,9 @@ function page() {
               {users.map((user: any) => (
                 <article
                   key={user.id}
-                  className="w-full items-center justify-between md:min-w-[300px] flex bg-white p-4 rounded-md"
+                  className="w-full items-center justify-between md:min-w-[300px] flex border border-slate-300 p-4 rounded-xl ransition hover:bg-slate-400 hover:border-0 hover:text-slate-700 hover:cursor-pointer transition duration-300"
                 >
-                  <article className="flex gap-4 items-center">
+                  <article className="flex gap-4 items-center hover:cursor-pointer transition duration-300 hover:bg-slate-400 hover:border-0 hover:text-slate-800">
                     <Avatar
                       className="w-12 h-12 text-sm"
                       showFallback
@@ -121,7 +124,7 @@ function page() {
               {data?.data?.map((user: any) => (
                 <article
                   key={user.id}
-                  className="w-full items-center justify-between md:min-w-[300px] flex bg-white p-4 rounded-md"
+                  className="w-full items-center justify-between md:min-w-[300px] flex border border-slate-300 p-4 rounded-xl ransition hover:bg-slate-400 hover:border-0 hover:text-slate-700 hover:cursor-pointer transition duration-300"
                 >
                   <article className="flex gap-4 items-center">
                     <Avatar
@@ -156,12 +159,12 @@ function page() {
             </article>
           ) : (
             <article className="w-full h-full flex flex-col justify-center items-center">
-              <Loader2 size={30} className="animate-spin text-gray-200" />
+              <Loader2 size={30} className="animate-spin text-slate-500" />
             </article>
           )}
         </article>
       </article>
-    </article>
+    </WhiteContent>
   );
 }
 

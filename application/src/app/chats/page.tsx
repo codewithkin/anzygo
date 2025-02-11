@@ -2,19 +2,16 @@
 import LeftBar from "@/components/chat/LeftBar";
 import Page from "@/components/chat/Page";
 import ChatInfo from "@/components/chat/ChatInfo";
-import { auth } from "@/auth";
 import { getUser } from "@/lib/actions";
 import Content from "../layouts/Content";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 export default function Chats() {
   const { data, isPending } = useQuery({
     queryKey: ["user"],
     queryFn: getUser
   })
-
 
   console.log("DATA: ", data);
 
