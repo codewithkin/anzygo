@@ -15,8 +15,6 @@ export const getUser = async () => {
 
   const email = session?.user?.email || "";
 
-  const users = await prisma.user.findMany();
-
   const user = await prisma.user.findUnique({
     where: {
       email,
@@ -40,8 +38,6 @@ export const getUser = async () => {
     },
   });
 
-  console.log("User: ", user);
-
   return user;
 };
 
@@ -54,8 +50,6 @@ export const getSpecificUser = async (id: string) => {
       messages: true,
     },
   });
-
-  console.log("Specific User user: ", user);
 
   return user;
 };

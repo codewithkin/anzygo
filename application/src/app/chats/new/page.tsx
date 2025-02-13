@@ -24,8 +24,6 @@ function page() {
 
   const searchForUser = (term: string) => {
     try {
-      console.log(term);
-
       // Find a user with the search term
       const filteredUsers = data?.data.filter(
         (user: any) => user.name == term || user.email == term,

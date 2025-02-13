@@ -157,44 +157,8 @@ const MessageInput = () => (
 );
 
 function Page({ chat }: { chat: any }) {
-  const messageData: Message[] = [
-    {
-      user: {
-        name: "Jin Mori",
-        avatar: "/images/mouse.jpg",
-      },
-      message:
-        "Hey there Kin, Happy Friday ! Any plans for the weekend up ahead ? If not, you might have to start ANOTHER side project lol",
-      metadata: {
-        sendTime: "09:20",
-        seen: 1,
-      },
-    },
-    {
-      user: {
-        name: "Jin Mori",
-        avatar: "/images/jin.jpg",
-      },
-      message:
-        "Seriously though, please don't start a new side project this weekend. I beg of you",
-      metadata: {
-        sendTime: "09:21",
-        seen: 0,
-      },
-    },
-    {
-      user: {
-        name: "Kin Leon Zinzombe",
-        avatar: "/images/kin.jpg",
-      },
-      message:
-        "No promises lol. Actually scratch that, I will NOT follow that advice. SIDE PROJECTS RULE !!!",
-      metadata: {
-        sendTime: "09:21",
-        seen: 0,
-      },
-    },
-  ];
+  console.log("Chat: ", chat);
+
 
   if (!chat) {
     return (
@@ -217,6 +181,7 @@ function Page({ chat }: { chat: any }) {
   }
 
   const messages = chat.filter((message: any) => (message.sender = "user"));
+
 
   return (
     <article className="h-full flex flex-col justify-between w-2/3">

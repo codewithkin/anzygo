@@ -11,18 +11,20 @@ import { useEffect, useState } from "react";
 import { createChat } from "@/helpers/queries/createChat";
 
 export default function Chats() {
-  const [selectedChat, setSelectedChat] = useState(null);
   const { data, isPending } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
   });
 
+  const [selectedChat, setSelectedChat] = useState(data);
+
+  console.log("Selected chats:", data?.chats[0]);
+
   // Get the user's chats
   const chats: any | null = data?.chats || [];
 
-  // Get the user id from query params
+  // Get the target user id from query params (for creating a new chat)
   const params = useSearchParams();
-
   const id = params.get("id") || "";
 
   // Make a request to the create new chat endpoint
@@ -39,6 +41,7 @@ export default function Chats() {
   // Trigger mutation only when `id` changes
   useEffect(() => {
     if (id) {
+      // Trigger the mutation
       mutation.mutate();
     }
   }, [id]);
