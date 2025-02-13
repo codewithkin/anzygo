@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createChat } from "@/helpers/queries/createChat";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
+import useQueryStore from "@/providers/CustomQueryClientProvider";
 
 export default function Chats() {
   const { data, isPending } = useQuery({
@@ -19,6 +20,9 @@ export default function Chats() {
 
   // Get the user's chats
   const chats: any | null = data?.chats || [];
+
+  // Get the query client
+  const queryClient = useQueryStore(state => state.queryClient);
   
   const selectedChat = useSelectedChatStore(state => state.selectedChat);
   const setSelectedChat = useSelectedChatStore(state => state.setSelectedChat);
@@ -40,6 +44,9 @@ export default function Chats() {
     mutationFn: async () => await createChat(id),
     onSuccess: (data) => {
       console.log("Data returned when trying to create chat: ", data);
+
+      // Reload the query client
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       console.log("Error while creating chat: ", error);

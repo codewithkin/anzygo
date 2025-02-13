@@ -5,7 +5,7 @@
  * - id: The id of the user to create the chat with.
  *
  * The route does the following:
- * 1. It checks if the user is authenticated, and gets the user's id from the session.
+ * 1. It checks if the user is authenticated, and gets the user's id
  * 2. It creates a new chat in the database, with the two users as admins.
  * 3. It returns the newly created chat.
  */
@@ -20,13 +20,15 @@ export async function POST(request: NextRequest) {
     // Get the id of the user to create the chat with from the request
     const id = request.nextUrl.searchParams.get("id") || "";
 
-    // Check if the user is authenticated, and get the user's id from the session
-    const session = await auth();
-    const userId = session?.user?.id;
+    // Check if the user is authenticated, and get the user's id
+    const user = await getUser();
+
+    const userId = user?.id;
 
     // If the user is not authenticated, return a 401 error
     if (!userId) {
       console.log("ALERT: User is not authenticated");
+
       return NextResponse.json(
         {
           message: "User is not authenticated",
@@ -35,14 +37,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const thisUser = await prisma.chatUser.findFirst({
+      where: {
+        chatId: id,
+        userId,
+      }
+    })
+
+    const receivingUser = await prisma.chatUser.findFirst({
+      where: {
+        chatId: id,
+        userId: id,
+      }
+    })
+
     // Check if there is an existing chat between the users
     const existingChat = await prisma.chat.findFirst({
       where: {
         type: "private",
         users: {
           some: {
-            id: userId,
-          }
+            id: {
+              in: [receivingUser?.id, thisUser?.id],
+            },
+          },
         },
       },
     });
@@ -65,32 +83,35 @@ export async function POST(request: NextRequest) {
     await prisma.chatUser.createMany({
       data: [
         {
-          chat: {
-            connect: {
-              id: newChat.id,
-            },
-          },
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
+          chatId: newChat.id,
+          userId,
           role: "admin",
         },
         {
-          chat: {
-            connect: {
-              id: newChat.id,
-            },
-          },
-          user: {
-            connect: {
-              id,
-            },
-          },
+          chatId: newChat.id,
+          userId: id,
           role: "admin",
         },
       ],
+    });
+
+    // Add the users to the chat
+    await prisma.chat.update({
+      where: {
+        id: newChat.id,
+      },
+      data: {
+        users: {
+          connect: [
+            {
+              id: thisUser?.id,
+            },
+            {
+              id: receivingUser?.id,
+            }
+          ]
+        }
+      }
     });
 
     // Log the newly created chat to the console
