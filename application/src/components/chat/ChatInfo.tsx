@@ -12,12 +12,14 @@ import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Avatar } from "@heroui/avatar";
 
 export default function ChatInfo({ chat }: { chat: any }) {
-  const people = [];
+  const people = chat?.chat?.users || [];
+
+  console.log("Chat data according to chat info: ", chat);
 
   return (
     chat && (
-      <article className="flex flex-col gap-2 max-w-[300px] text-slate-800 font-semibold">
-        <Card className="max-h-[300px] min-w-[300px] overflow-y-scroll">
+      <article className="flex flex-col gap-2 min-w-[300px] text-slate-800 font-semibold">
+        <Card className="max-h-[300px] min-w-[300px] overflow-y-scroll min-h-4/5">
           <CardHeader className="w-full items-center justify-between">
             <CardTitle className="text-xl">Chat Info</CardTitle>
           </CardHeader>
@@ -30,7 +32,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
                   <article className="w-full flex justify-between items-center">
                     <article className="flex items-center gap-2 text-sm font-normal">
                       <PictureInPicture2 size={20} strokeWidth={1} />
-                      <p>265 Photos</p>
+                      <p>{chat?.messages || 0} Photos</p>
                     </article>
                     <ChevronDown size={20} strokeWidth={1.5} />
                   </article>
@@ -52,7 +54,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
                   <article className="w-full flex justify-between items-center">
                     <article className="flex items-center gap-2 text-sm font-normal">
                       <Video size={20} strokeWidth={1} />
-                      <p>27 Videos</p>
+                      <p>{chat?.messages || 0} Videos</p>
                     </article>
                     <ChevronDown size={20} strokeWidth={1.5} />
                   </article>
@@ -62,7 +64,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
                   <article className="w-full flex justify-between items-center">
                     <article className="flex items-center gap-2 text-sm font-normal">
                       <File size={20} strokeWidth={1} />
-                      <p>375 Files</p>
+                      <p>{chat?.messages || 0} Files</p>
                     </article>
                     <ChevronDown size={20} strokeWidth={1.5} />
                   </article>
@@ -72,7 +74,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
                   <article className="w-full flex justify-between items-center">
                     <article className="flex items-center gap-2 text-sm font-normal">
                       <Link size={20} strokeWidth={1} />
-                      <p>20 Shared Links</p>
+                      <p>{chat?.messages || 0} Shared Links</p>
                     </article>
                     <ChevronDown size={20} strokeWidth={1.5} />
                   </article>
@@ -82,7 +84,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
                   <article className="w-full flex justify-between items-center">
                     <article className="flex items-center gap-2 text-sm font-normal">
                       <Music size={20} strokeWidth={1} />
-                      <p>12 Audio Files</p>
+                      <p>{chat?.messages || 0} Audio Files</p>
                     </article>
                     <ChevronDown size={20} strokeWidth={1.5} />
                   </article>
@@ -92,7 +94,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
                   <article className="w-full flex justify-between items-center">
                     <article className="flex items-center gap-2 text-sm font-normal">
                       <Mic size={20} strokeWidth={1} />
-                      <p>90 Voice Messages</p>
+                      <p>{chat?.messages || 0} Voice Messages</p>
                     </article>
                     <ChevronDown size={20} strokeWidth={1.5} />
                   </article>
@@ -109,10 +111,15 @@ export default function ChatInfo({ chat }: { chat: any }) {
 
           <CardContent className="flex flex-col gap-2">
             {people.map((person: { avatar: string; name: string }) => (
-              <article className="flex gap-2 items-center" key={person.name}>
-                <Avatar src={person.avatar} radius="sm" name={person.name} />
+              <article className="flex gap-2 items-center" key={person?.id}>
+                <Avatar 
+                  src={person?.user?.image} 
+                  radius="md" 
+                  size="md" 
+                  name={person?.user?.name || "Kin"} 
+                />
 
-                <h2 className=" font-semibold">{person.name}</h2>
+                <h2 className=" font-semibold">{person?.user?.name}</h2>
               </article>
             ))}
           </CardContent>
