@@ -16,12 +16,20 @@ export default function Chats() {
     queryFn: getUser,
   });
 
-  const [selectedChat, setSelectedChat] = useState(data);
 
-  console.log("Selected chats:", data?.chats[0]);
 
   // Get the user's chats
   const chats: any | null = data?.chats || [];
+
+  const [selectedChat, setSelectedChat] = useState(chats[0]);
+
+  console.log("Selected chat:", selectedChat);
+
+  useEffect(() => {
+    if (chats.length > 0) {
+      setSelectedChat(chats[0]);
+    }
+  }, [chats]);
 
   // Get the target user id from query params (for creating a new chat)
   const params = useSearchParams();

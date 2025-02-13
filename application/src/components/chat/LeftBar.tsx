@@ -6,19 +6,30 @@ import { Input } from "@heroui/input";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { ChangeEvent, ChangeEventHandler, Dispatch, FormEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  Dispatch,
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
 import search from "@/helpers/misc/search";
 
-const SearchBar = ({updateFn, chats}: {updateFn: Dispatch<any>,chats: any}) => {
+const SearchBar = ({
+  updateFn,
+  chats,
+}: {
+  updateFn: Dispatch<any>;
+  chats: any;
+}) => {
   const searchForUser = (term: string) => {
     try {
-      console.log(chats)
+      console.log(chats);
       // Find a user with the search term
       const filteredUsers = chats.filter((chat: any) => {
         const regex = new RegExp(term, "i");
-        return (
-          regex.test(chat?.user?.name) || regex.test(chat?.user?.email)
-        );
+        return regex.test(chat?.user?.name) || regex.test(chat?.user?.email);
       });
 
       updateFn(filteredUsers);
@@ -36,7 +47,7 @@ const SearchBar = ({updateFn, chats}: {updateFn: Dispatch<any>,chats: any}) => {
         if (e.target.value.length > 0) {
           searchForUser(e.target.value);
         } else {
-          updateFn(chats)
+          updateFn(chats);
         }
       }}
       classNames={{
@@ -78,7 +89,7 @@ const ChatCard = ({ chat }: { chat: Chat }) => {
     <article
       className={`flex gap-4 items-center p-2 rounded-xl hover:cursor-pointer transition-all duration-500 hover:bg-gray-200 ${chat.active && "bg-slate-200"}`}
     >
-      <Avatar 
+      <Avatar
         className="w-12 h-12 text-sm"
         showFallback
         isBordered
@@ -133,19 +144,19 @@ const LeftBar = ({ chats }: { chats: any }) => {
       <SearchBar updateFn={setFilteredChats} chats={chats} />
 
       <article className="flex flex-col md:gap-8 my-4 w-full h-full">
-        {filteredChats ? 
-         filteredChats.length > 0 ? (
-          filteredChats.map((chat: any) => <ChatCard key={chat.id} chat={chat.chat} />)
-        ) : (
-          <NoChatsFound />
-        )
-        :
-        chats.length > 0 ? (
+        {filteredChats ? (
+          filteredChats.length > 0 ? (
+            filteredChats.map((chat: any) => (
+              <ChatCard key={chat.id} chat={chat.chat} />
+            ))
+          ) : (
+            <NoChatsFound />
+          )
+        ) : chats.length > 0 ? (
           chats.map((chat: any) => <ChatCard key={chat.id} chat={chat.chat} />)
         ) : (
           <NoChatsFound />
-        )
-      }
+        )}
       </article>
     </article>
   );

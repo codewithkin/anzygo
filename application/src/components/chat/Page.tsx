@@ -61,8 +61,10 @@ const Tools = () => (
   </article>
 );
 
-const Header = () => {
-  const status: "online" | "offline" | "typing" = "online";
+const Header = ({user}: {user: any}) => {
+  let status = user?.status;
+
+  console.log("User info: ", user);
 
   return (
     <article className="w-full flex justify-between items-center py-2 h-1/5">
@@ -73,11 +75,11 @@ const Header = () => {
             showFallback
             isBordered
             color="primary"
-            name="John Doe"
+            name={user?.name}
             radius="full"
-            src="/images/mouse.jpg"
+            src={user?.image}
           />
-          <h2 className="text-xl font-semibold">John Doe</h2>
+          <h2 className="text-xl font-semibold">{user?.name}</h2>
         </article>
         <StatusIndicator status={status} />
       </article>
@@ -156,9 +158,9 @@ const MessageInput = () => (
   />
 );
 
-function Page({ chat }: { chat: any }) {
-  console.log("Chat: ", chat);
 
+function Page({ chat, id }: { chat: any, id?: string }) {
+  console.log("Chat: ", chat);
 
   if (!chat) {
     return (
@@ -180,12 +182,11 @@ function Page({ chat }: { chat: any }) {
     );
   }
 
-  const messages = chat.filter((message: any) => (message.sender = "user"));
-
+  const messages = [];
 
   return (
     <article className="h-full flex flex-col justify-between w-2/3">
-      <Header />
+      <Header user={chat?.user} />
       <Messages messageData={messages} />
       <MessageInput />
     </article>
