@@ -7,22 +7,16 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import {
-  ChangeEvent,
-  ChangeEventHandler,
   Dispatch,
-  FormEvent,
   useEffect,
   useState,
 } from "react";
-import search from "@/helpers/misc/search";
+import { useSelectedChatStore } from "@/stores/useSelectedChat";
 
-const SearchBar = ({
-  updateFn,
-  chats,
-}: {
-  updateFn: Dispatch<any>;
-  chats: any;
-}) => {
+const SearchBar = ({ chats }: { chats: any }) => {
+  const [filteredChats, setFilteredChats] = useState<any | null>(null);
+  const setSelectedChat = useSelectedChatStore(state => state.setSelectedChat);
+
   const searchForUser = (term: string) => {
     try {
       console.log(chats);
@@ -32,7 +26,7 @@ const SearchBar = ({
         return regex.test(chat?.user?.name) || regex.test(chat?.user?.email);
       });
 
-      updateFn(filteredUsers);
+      setFilteredChats(filteredUsers);
 
       console.log("Users searched for: ", filteredUsers);
     } catch (e) {
@@ -47,7 +41,7 @@ const SearchBar = ({
         if (e.target.value.length > 0) {
           searchForUser(e.target.value);
         } else {
-          updateFn(chats);
+          setFilteredChats(chats);
         }
       }}
       classNames={{
@@ -78,15 +72,11 @@ export interface Chat {
 }
 
 const ChatCard = ({ chat }: { chat: Chat }) => {
-  /* // It seems the "chat" has missing or incomplete information on users
-  // Fetch the particular user's data based on their id
-  const {data} = useQuery({
-    queryKey: ["getSpecificUser"],
-    queryFn: async () => getSpecificUser(chat.users[0].id)
-  }) */
+  const setSelectedChat = useSelectedChatStore(state => state.setSelectedChat);
 
   return (
     <article
+      onClick={() => setSelectedChat(chat)}
       className={`flex gap-4 items-center p-2 rounded-xl hover:cursor-pointer transition-all duration-500 hover:bg-gray-200 ${chat.active && "bg-slate-200"}`}
     >
       <Avatar
@@ -141,7 +131,7 @@ const LeftBar = ({ chats }: { chats: any }) => {
 
   return (
     <article className="h-full overflow-y-scroll w-1/4">
-      <SearchBar updateFn={setFilteredChats} chats={chats} />
+      <SearchBar chats={chats} />
 
       <article className="flex flex-col md:gap-8 my-4 w-full h-full">
         {filteredChats ? (
@@ -163,3 +153,4 @@ const LeftBar = ({ chats }: { chats: any }) => {
 };
 
 export default LeftBar;
+
