@@ -6,15 +6,42 @@ import { Input } from "@heroui/input";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import { getSpecificUser } from "@/lib/actions";
+import { ChangeEvent, ChangeEventHandler, Dispatch, FormEvent, useEffect, useState } from "react";
+import search from "@/helpers/misc/search";
 
-const SearchBar = () => {
+const SearchBar = ({updateFn, chats}: {updateFn: Dispatch<any>,chats: any}) => {
+  const searchForUser = (term: string) => {
+    try {
+      console.log(chats)
+      // Find a user with the search term
+      const filteredUsers = chats.filter((chat: any) => {
+        const regex = new RegExp(term, "i");
+        return (
+          regex.test(chat?.user?.name) || regex.test(chat?.user?.email)
+        );
+      });
+
+      updateFn(filteredUsers);
+
+      console.log("Users searched for: ", filteredUsers);
+    } catch (e) {
+      console.log("Error while searching for user: ", e);
+    }
+  };
+
   return (
     <Input
-      className="max-w-[300px]"
+      className="max-w-full"
+      onChange={(e) => {
+        if (e.target.value.length > 0) {
+          searchForUser(e.target.value);
+        } else {
+          updateFn(chats)
+        }
+      }}
       classNames={{
         input: "placeholder:text-slate-400 bg-primary/40 max-h-[300px]",
+        inputWrapper: "bg-blue-200 hover:bg-slate-500",
       }}
       startContent={<Search size={20} className="text-slate-400" />}
       placeholder="Search"
@@ -51,7 +78,7 @@ const ChatCard = ({ chat }: { chat: Chat }) => {
     <article
       className={`flex gap-4 items-center p-2 rounded-xl hover:cursor-pointer transition-all duration-500 hover:bg-gray-200 ${chat.active && "bg-slate-200"}`}
     >
-      <Avatar
+      <Avatar 
         className="w-12 h-12 text-sm"
         showFallback
         isBordered
@@ -95,16 +122,30 @@ const NoChatsFound = () => {
 };
 
 const LeftBar = ({ chats }: { chats: any }) => {
+  const [filteredChats, setFilteredChats] = useState<any | null>(null);
+
+  useEffect(() => {
+    setFilteredChats(chats);
+  }, [chats]);
+
   return (
     <article className="h-full overflow-y-scroll w-1/3">
-      <SearchBar />
+      <SearchBar updateFn={setFilteredChats} chats={chats} />
 
       <article className="flex flex-col md:gap-8 my-4 w-full h-full">
-        {chats && chats.length > 0 ? (
+        {filteredChats ? 
+         filteredChats.length > 0 ? (
+          filteredChats.map((chat: any) => <ChatCard key={chat.id} chat={chat.chat} />)
+        ) : (
+          <NoChatsFound />
+        )
+        :
+        chats.length > 0 ? (
           chats.map((chat: any) => <ChatCard key={chat.id} chat={chat.chat} />)
         ) : (
           <NoChatsFound />
-        )}
+        )
+      }
       </article>
     </article>
   );
