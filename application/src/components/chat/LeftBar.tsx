@@ -140,7 +140,7 @@ const LeftBar = ({ chats }: { chats: any }) => {
   }, [chats]);
 
   return (
-    <article className="h-full overflow-y-scroll w-1/3">
+    <article className="h-full overflow-y-scroll w-1/4">
       <SearchBar updateFn={setFilteredChats} chats={chats} />
 
       <article className="flex flex-col md:gap-8 my-4 w-full h-full">

@@ -67,8 +67,8 @@ const Header = ({user}: {user: any}) => {
   console.log("User info: ", user);
 
   return (
-    <article className="w-full flex justify-between items-center py-2 h-1/5">
-      <article className="flex flex-col gap-2">
+    <article className="w-full flex justify-between items-center py-2">
+      <article className="flex flex-col gap-2 w-full">
         <article className="flex items-center gap-2">
           <Avatar
             className="w-8 h-8 text-sm"
@@ -101,7 +101,7 @@ export type Message = {
 };
 
 const Messages = ({ messageData }: { messageData: Message[] }) => (
-  <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll py-4">
+  <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll">
     {messageData.length > 0 ? (
       messageData.map((message: Message) => (
         <article
@@ -140,7 +140,7 @@ const Messages = ({ messageData }: { messageData: Message[] }) => (
 
 const MessageInput = () => (
   <Input
-    className="py-2 h-1/5 justify-end flex flex-col"
+    className="py-2 justify-end flex flex-col"
     classNames={{
       inputWrapper: "justify-end flex flex-col absolute bottom-0",
       input: "bg-primary ",
@@ -185,7 +185,7 @@ function Page({ chat, id }: { chat: any, id?: string }) {
   const messages = [];
 
   return (
-    <article className="h-full flex flex-col justify-between w-2/3">
+    <article className="h-full flex flex-col justify-between w-3/4">
       <Header user={chat?.user} />
       <Messages messageData={messages} />
       <MessageInput />
