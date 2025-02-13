@@ -40,17 +40,18 @@ export async function POST(request: NextRequest) {
 
     let thisUser = await prisma.chatUser.findFirst({
       where: {
-        chatId: id,
         userId,
       },
     });
 
     let receivingUser = await prisma.chatUser.findFirst({
       where: {
-        chatId: id,
         userId: id,
       },
     });
+
+    console.log("This user: ", thisUser);
+    console.log("Receiving user: ", receivingUser);
 
     let newChat;
 

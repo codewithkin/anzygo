@@ -18,10 +18,14 @@ io.on("connection", (socket) => {
     console.log("A user joined the room: ", roomId);  
   })
 
-  socket.on("message", (data) => {
-    console.log("Message received:", data);
-    io.emit("message", data); // Broadcast message to all clients
-  });
+  socket.on("send-dm", ({roomId, message}) => {
+    console.log("DM received: ", message);
+    io.to(roomId).emit("receive-dm", message);
+  })
+
+  socket.on("receive-dm", (message) => {
+    console.log("DM received: ", message);
+  })
 
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
