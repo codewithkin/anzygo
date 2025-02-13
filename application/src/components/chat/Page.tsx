@@ -144,69 +144,79 @@ export type Message = {
   };
 };
 
-const Messages = ({ messageData }: { messageData: Message[] }) => (
-  <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll">
-    {messageData.length > 0 ? (
-      messageData.map((message: Message) => (
-        <article
-          key={message.message}
-          className={`flex flex-col gap-1 w-full ${
-            message.user.name === "Kin Leon Zinzombe" && "items-end"
-          }`}
-        >
-          <p
-            className={` ${
-              message.user.name === "Kin Leon Zinzombe"
-                ? "bg-primary text-white rounded-tr-xl rounded-tl-xl rounded-bl-xl"
-                : "bg-gray-200 rounded-tr-xl rounded-tl-xl rounded-br-xl"
-            } text-sm p-4 max-w-[400px]`}
-          >
-            {message.message}
-          </p>
-          <p className="text-slate-400 text-xs flex w-fit gap-2">
-            {message.user.name === "Kin Leon Zinzombe" ? (
-              <Eye size={16} />
-            ) : (
-              <EyeClosedIcon size={16} />
-            )}
-            <span>{message.metadata.sendTime}</span>
-          </p>
-        </article>
-      ))
-    ) : (
-      <article className="w-full h-full flex flex-col justify-center items-center">
-        <h3 className="font-semibold text-xl">No messages yet</h3>
-        <p className="text-slate-400">Go on...say something</p>
-      </article>
-    )}
-  </article>
-);
+const Messages = ({ messageData }: { messageData: Message[] }) => {
+  useEffect(() => {
+    console.log("Message data: ", messageData);
+  }, [messageData])
 
-const MessageInput = () => (
-  <Input
-    className="py-2 justify-end flex flex-col"
-    classNames={{
-      inputWrapper: "justify-end flex flex-col absolute bottom-0",
-      input: "bg-primary ",
-    }}
-    placeholder="Say something..."
-    startContent={
-      <Paperclip className="text-slate-400" size={20} strokeWidth={1} />
+  return (
+    <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll">
+      {messageData.length > 0 ? (
+        messageData.map((message: Message) => (
+          <h2>Hello</h2>
+        ))
+      ) : (
+        <article className="w-full h-full flex flex-col justify-center items-center">
+          <h3 className="font-semibold text-xl">No messages yet</h3>
+          <p className="text-slate-400">Go on...say something</p>
+        </article>
+      )}
+    </article>
+  )
+};
+
+const MessageInput = ({ roomId, updateFunction, messages }: {roomId?: string, updateFunction: any, messages: any}) => {
+  const [message, setMessage] = useState<string | undefined>("");
+
+  const sendMessage = () => {
+    if (socket) {
+      socket.emit("send-dm", { roomId, message });
+
+      // Update the messages
+      updateFunction([ ...messages, message ]);
     }
-    endContent={
-      <article className="flex items-center gap-2">
-        <Mic className="text-slate-400" size={20} strokeWidth={1} />
-        <SendHorizontal className="text-slate-400" size={20} strokeWidth={1} />
-      </article>
-    }
-  />
-);
+  }
+
+  return (
+    <form onSubmit={(e) => {
+      e.preventDefault();
+
+
+      if(message && message?.length > 0) {
+        sendMessage();
+      }
+
+      setMessage("");
+    }}>
+      <Input
+        className="py-2 justify-end flex flex-col"
+        classNames={{
+          inputWrapper: "justify-end flex flex-col absolute bottom-0",
+          input: "bg-primary ",
+        }}
+        placeholder="Say something..."
+        startContent={
+          <Paperclip className="text-slate-400" size={20} strokeWidth={1} />
+        }
+        onChange={(e) => setMessage(e.target.value)}
+        value={message}
+        endContent={
+          <article className="flex items-center gap-2">
+            <Mic className="text-slate-400" size={20} strokeWidth={1} />
+            <Button type="submit" size="icon">
+              <SendHorizontal className="text-white" size={20} strokeWidth={1} />
+            </Button>
+          </article>
+        }
+      />
+    </form>
+  )
+};
 
 function Page() {
   const chat = useSelectedChatStore((state) => state.selectedChat);
 
   console.log("Chat according to Page: ", chat);
-  
 
   const [messages, setMessages] = useState<string[]>([]);
   const [message, setMessage] = useState("");
@@ -262,7 +272,7 @@ function Page() {
     <article className="h-full flex flex-col justify-between w-3/4">
       <Header user={chat?.user} />
       <Messages messageData={messages} />
-      <MessageInput />
+      <MessageInput messages={messages} updateFunction={setMessages} roomId={chat?.id} />
     </article>
   );
 }
