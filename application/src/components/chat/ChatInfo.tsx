@@ -37,16 +37,9 @@ export default function ChatInfo({ chat }: { chat: any }) {
                     <ChevronDown size={20} strokeWidth={1.5} />
                   </article>
 
+                  {/* Map all files */}
                   <article className="flex gap-2 items-center w-full overflow-x-scroll">
-                    {people.length > 0 && (
-                      <Image
-                        className="rounded-xl"
-                        src="/images/mouse.jpg"
-                        width={200}
-                        height={80}
-                        alt="Image"
-                      />
-                    )}
+                    
                   </article>
                 </article>
 
@@ -106,7 +99,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
 
         <Card className="bg-primary text-white">
           <CardHeader>
-            <CardTitle>People in this conversation</CardTitle>
+            <CardTitle className="text-2xl">People in this conversation</CardTitle>
           </CardHeader>
 
           <CardContent className="flex flex-col gap-2">
