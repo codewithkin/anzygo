@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
 
     // If there is an existing chat, return it
     if (existingChat) {
+      console.log("ALERT: A chat already exists between these users")
       // Redirect to /chats?id=existingChatID
       return NextResponse.json({ message: "Chat already exists" });
     }
