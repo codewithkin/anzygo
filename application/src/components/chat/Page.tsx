@@ -30,6 +30,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
+import { urls } from "@/lib/urls";
+import { io, Socket, DefaultEventsMap } from "socket.io-client";
+import { useEffect, useState } from "react";
 
 const StatusIndicator = ({
   status,
@@ -223,7 +226,31 @@ function Page() {
     );
   }
 
-  const messages = [];
+  const [messages, setMessages] = useState<string[]>([]);
+  const [message, setMessage] = useState("");
+  const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap> | null>(null);
+
+  useEffect(() => {
+    setSocket(io(urls.backend));
+
+    // Listen for messages from server
+    if(socket) {
+      socket.on("message", (msg: string) => {
+        setMessages((prev) => [...prev, msg]);
+      });
+  
+      return () => {
+        socket.off("message");
+      };
+    }
+  }, []);
+
+  const sendMessage = () => {
+    if (message.trim()) {
+      socket.emit("message", message);
+      setMessage("");
+    }
+  };
 
   return (
     <article className="h-full flex flex-col justify-between w-3/4">
