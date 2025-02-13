@@ -22,10 +22,12 @@ export default function Chats() {
   const chats: any | null = data?.chats || [];
 
   // Get the query client
-  const queryClient = useQueryStore(state => state.queryClient);
-  
-  const selectedChat = useSelectedChatStore(state => state.selectedChat);
-  const setSelectedChat = useSelectedChatStore(state => state.setSelectedChat);
+  const queryClient = useQueryStore((state) => state.queryClient);
+
+  const selectedChat = useSelectedChatStore((state) => state.selectedChat);
+  const setSelectedChat = useSelectedChatStore(
+    (state) => state.setSelectedChat,
+  );
 
   console.log("Selected chat:", selectedChat);
 

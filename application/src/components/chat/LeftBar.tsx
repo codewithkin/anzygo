@@ -6,16 +6,14 @@ import { Input } from "@heroui/input";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import {
-  Dispatch,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
 
 const SearchBar = ({ chats }: { chats: any }) => {
   const [filteredChats, setFilteredChats] = useState<any | null>(null);
-  const setSelectedChat = useSelectedChatStore(state => state.setSelectedChat);
+  const setSelectedChat = useSelectedChatStore(
+    (state) => state.setSelectedChat,
+  );
 
   const searchForUser = (term: string) => {
     try {
@@ -72,7 +70,9 @@ export interface Chat {
 }
 
 const ChatCard = ({ chat }: { chat: Chat }) => {
-  const setSelectedChat = useSelectedChatStore(state => state.setSelectedChat);
+  const setSelectedChat = useSelectedChatStore(
+    (state) => state.setSelectedChat,
+  );
 
   return (
     <article
@@ -154,4 +154,3 @@ const LeftBar = ({ chats }: { chats: any }) => {
 };
 
 export default LeftBar;
-

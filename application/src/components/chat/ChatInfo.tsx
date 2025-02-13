@@ -14,7 +14,7 @@ import { Avatar } from "@heroui/avatar";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
 
 export default function ChatInfo() {
-  const chat = useSelectedChatStore(state => state.selectedChat);
+  const chat = useSelectedChatStore((state) => state.selectedChat);
   const people = chat?.chat?.users || [];
 
   return (
@@ -39,9 +39,7 @@ export default function ChatInfo() {
                   </article>
 
                   {/* Map all files */}
-                  <article className="flex gap-2 items-center w-full overflow-x-scroll">
-                    
-                  </article>
+                  <article className="flex gap-2 items-center w-full overflow-x-scroll"></article>
                 </article>
 
                 <article className="flex flex-col gap-2">
@@ -100,17 +98,19 @@ export default function ChatInfo() {
 
         <Card className="bg-primary text-white">
           <CardHeader>
-            <CardTitle className="text-2xl">People in this conversation</CardTitle>
+            <CardTitle className="text-2xl">
+              People in this conversation
+            </CardTitle>
           </CardHeader>
 
           <CardContent className="flex flex-col gap-2">
             {people.map((person: { avatar: string; name: string }) => (
               <article className="flex gap-2 items-center" key={person?.id}>
-                <Avatar 
-                  src={person?.user?.image} 
-                  radius="md" 
-                  size="md" 
-                  name={person?.user?.name || "Kin"} 
+                <Avatar
+                  src={person?.user?.image}
+                  radius="md"
+                  size="md"
+                  name={person?.user?.name || "Kin"}
                 />
 
                 <h2 className=" font-semibold">{person?.user?.name}</h2>

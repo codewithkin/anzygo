@@ -13,6 +13,7 @@
 import { auth } from "@/auth";
 import { getUser } from "@/lib/actions";
 import { prisma } from "@/prisma";
+import { Variable } from "lucide-react";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -37,19 +38,59 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const thisUser = await prisma.chatUser.findFirst({
+    let thisUser = await prisma.chatUser.findFirst({
       where: {
         chatId: id,
         userId,
-      }
-    })
+      },
+    });
 
-    const receivingUser = await prisma.chatUser.findFirst({
+    let receivingUser = await prisma.chatUser.findFirst({
       where: {
         chatId: id,
         userId: id,
-      }
-    })
+      },
+    });
+
+    let newChat;
+
+    if (!thisUser || !receivingUser) {
+      // Create a new chat in the database (without the users)
+    newChat = await prisma.chat.create({
+      data: {
+        type: "private",
+      },
+    });
+
+      // Create a new chatUser for each of the 2 users
+      await prisma.chatUser.createMany({
+        data: [
+          {
+            chatId: newChat.id,
+            userId,
+            role: "admin",
+          },
+          {
+            chatId: newChat.id,
+            userId: id,
+            role: "admin",
+          },
+        ],
+      });
+
+      // Try finding the users again
+      thisUser = await prisma.chatUser.findFirst({
+        where: {
+          userId,
+        },
+      });
+
+      receivingUser = await prisma.chatUser.findFirst({
+        where: {
+          userId: id,
+        },
+      });
+    }
 
     // Check if there is an existing chat between the users
     const existingChat = await prisma.chat.findFirst({
@@ -72,30 +113,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Chat already exists" });
     }
 
-    // Create a new chat in the database (without the users)
-    const newChat = await prisma.chat.create({
-      data: {
-        type: "private",
-      },
-    });
-
-    // Create a new chatUser for each of the 2 users
-    await prisma.chatUser.createMany({
-      data: [
-        {
-          chatId: newChat.id,
-          userId,
-          role: "admin",
+    // Create a new chat
+    if(!newChat) {
+      let newChat = await prisma.chat.create({
+        data: {
+          type: "private",
         },
-        {
-          chatId: newChat.id,
-          userId: id,
-          role: "admin",
-        },
-      ],
-    });
+      });
 
-    // Add the users to the chat
+      // Add the users to the chat
     await prisma.chat.update({
       where: {
         id: newChat.id,
@@ -108,11 +134,14 @@ export async function POST(request: NextRequest) {
             },
             {
               id: receivingUser?.id,
-            }
-          ]
-        }
-      }
+            },
+          ],
+        },
+      },
     });
+    }
+
+    
 
     // Log the newly created chat to the console
     console.log(newChat);
@@ -132,4 +161,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

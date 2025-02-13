@@ -1,5 +1,5 @@
 "use client";
-import {create} from "zustand";
+import { create } from "zustand";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
@@ -13,14 +13,14 @@ export const useQueryStore = create<QueryStore>((set) => ({
   setQueryClient: (queryClient) => set({ queryClient }),
 }));
 
-export const QueryClientProviderWrapper: React.FC<{children: ReactNode}> = ({ children }) => {
+export const QueryClientProviderWrapper: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const { queryClient } = useQueryStore();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-  </QueryClientProvider>
-  )
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 };
 
 export default useQueryStore;

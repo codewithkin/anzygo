@@ -31,8 +31,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
 import { urls } from "@/lib/urls";
-import { io, Socket, DefaultEventsMap } from "socket.io-client";
+import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
+import socket from "@/helpers/misc/socket";
 
 const StatusIndicator = ({
   status,
@@ -202,9 +203,33 @@ const MessageInput = () => (
 );
 
 function Page() {
-  const chat = useSelectedChatStore(state => state.selectedChat);
+  const chat = useSelectedChatStore((state) => state.selectedChat);
 
   console.log("Chat according to Page: ", chat);
+  
+
+  const [messages, setMessages] = useState<string[]>([]);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // Listen for messages from server
+    if (socket) {
+      socket.on("message", (msg: string) => {
+        setMessages((prev) => [...prev, msg]);
+      });
+
+      return () => {
+        socket.off("message");
+      };
+    }
+  }, []);
+
+  const sendMessage = () => {
+    if (message.trim() && socket) {
+      socket.emit("message", message);
+      setMessage("");
+    }
+  };
 
   if (!chat) {
     return (
@@ -225,32 +250,6 @@ function Page() {
       </article>
     );
   }
-
-  const [messages, setMessages] = useState<string[]>([]);
-  const [message, setMessage] = useState("");
-  const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap> | null>(null);
-
-  useEffect(() => {
-    setSocket(io(urls.backend));
-
-    // Listen for messages from server
-    if(socket) {
-      socket.on("message", (msg: string) => {
-        setMessages((prev) => [...prev, msg]);
-      });
-  
-      return () => {
-        socket.off("message");
-      };
-    }
-  }, []);
-
-  const sendMessage = () => {
-    if (message.trim()) {
-      socket.emit("message", message);
-      setMessage("");
-    }
-  };
 
   return (
     <article className="h-full flex flex-col justify-between w-3/4">
