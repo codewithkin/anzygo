@@ -16,8 +16,6 @@ export default function Chats() {
     queryFn: getUser,
   });
 
-
-
   // Get the user's chats
   const chats: any | null = data?.chats || [];
 

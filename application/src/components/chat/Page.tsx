@@ -1,25 +1,12 @@
 import { Avatar } from "@heroui/avatar";
 import { Input } from "@heroui/input";
-import {
-  Box,
-  Eye,
-  EyeClosedIcon,
-  MessagesSquare,
-  Mic,
-  MoreHorizontal,
-  Paperclip,
-  Phone,
-  Search,
-  SendHorizontal,
-} from "lucide-react";
+import { Box, Eye, EyeClosedIcon, MessagesSquare, Mic, MoreHorizontal, Paperclip, Phone, Search, SendHorizontal } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-const StatusIndicator = ({
-  status,
-}: {
-  status: "online" | "offline" | "typing";
-}) => (
+const StatusIndicator = ({ status }: { status: "online" | "offline" | "typing" }) => (
   <article className="flex gap-1 items-center">
     <article
       className={`w-2 h-2 rounded-full ${
@@ -46,25 +33,52 @@ const StatusIndicator = ({
 
 const Tools = () => (
   <article className="flex gap-4 items-center">
-    <Search
-      strokeWidth={1}
-      className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
-    />
-    <Phone
-      strokeWidth={1}
-      className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
-    />
-    <MoreHorizontal
-      strokeWidth={1}
-      className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
-    />
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Search
+            strokeWidth={1}
+            className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
+          />
+        </TooltipTrigger>
+        <TooltipContent>Search</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <Phone
+            strokeWidth={1}
+            className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
+          />
+        </TooltipTrigger>
+        <TooltipContent>Call</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+                <MoreHorizontal
+                  strokeWidth={1}
+                  className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
+                />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuItem>Team</DropdownMenuItem>
+              <DropdownMenuItem>Subscription</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </TooltipTrigger>
+        <TooltipContent>More options</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   </article>
 );
 
-const Header = ({user}: {user: any}) => {
+const Header = ({ user }: { user: any }) => {
   let status = user?.status;
-
-  console.log("User info: ", user);
 
   return (
     <article className="w-full flex justify-between items-center py-2">
@@ -158,10 +172,7 @@ const MessageInput = () => (
   />
 );
 
-
-function Page({ chat, id }: { chat: any, id?: string }) {
-  console.log("Chat: ", chat);
-
+function Page({ chat, id }: { chat: any; id?: string }) {
   if (!chat) {
     return (
       <article className="h-full flex flex-col justify-center items-center w-full">

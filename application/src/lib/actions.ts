@@ -34,7 +34,7 @@ export const getUser = async () => {
           user: true,
         },
       },
-      messages: true
+      messages: true,
     },
   });
 
