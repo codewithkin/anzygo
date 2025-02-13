@@ -224,6 +224,13 @@ function Page() {
     }
   }, []);
 
+  // Connect to a room
+  useEffect(() => {
+    if (socket && chat) {
+      socket.emit("join-chat", chat.id);
+    }
+  }, [chat, socket]);
+
   const sendMessage = () => {
     if (message.trim() && socket) {
       socket.emit("message", message);

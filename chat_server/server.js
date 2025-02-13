@@ -14,6 +14,10 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
+  socket.on("join-chat", (roomId) => {
+    console.log("A user joined the room: ", roomId);  
+  })
+
   socket.on("message", (data) => {
     console.log("Message received:", data);
     io.emit("message", data); // Broadcast message to all clients
