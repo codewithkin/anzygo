@@ -1,3 +1,4 @@
+"use client";
 import {
   PictureInPicture2,
   ChevronDown,
@@ -10,11 +11,11 @@ import {
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Avatar } from "@heroui/avatar";
+import { useSelectedChatStore } from "@/stores/useSelectedChat";
 
-export default function ChatInfo({ chat }: { chat: any }) {
+export default function ChatInfo() {
+  const chat = useSelectedChatStore(state => state.selectedChat);
   const people = chat?.chat?.users || [];
-
-  console.log("Chat data according to chat info: ", chat);
 
   return (
     chat && (

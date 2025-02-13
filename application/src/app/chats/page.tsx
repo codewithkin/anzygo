@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createChat } from "@/helpers/queries/createChat";
+import { useSelectedChatStore } from "@/stores/useSelectedChat";
 
 export default function Chats() {
   const { data, isPending } = useQuery({
@@ -18,8 +19,9 @@ export default function Chats() {
 
   // Get the user's chats
   const chats: any | null = data?.chats || [];
-
-  const [selectedChat, setSelectedChat] = useState(chats[0]);
+  
+  const selectedChat = useSelectedChatStore(state => state.selectedChat);
+  const setSelectedChat = useSelectedChatStore(state => state.setSelectedChat);
 
   console.log("Selected chat:", selectedChat);
 

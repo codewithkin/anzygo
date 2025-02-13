@@ -1,3 +1,4 @@
+"use client";
 import { Avatar } from "@heroui/avatar";
 import { Input } from "@heroui/input";
 import {
@@ -28,6 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSelectedChatStore } from "@/stores/useSelectedChat";
 
 const StatusIndicator = ({
   status,
@@ -101,6 +103,8 @@ const Tools = () => (
 
 const Header = ({ user }: { user: any }) => {
   let status = user?.status;
+
+  console.log("User according to Header: ", user);
 
   return (
     <article className="w-full flex justify-between items-center py-2">
@@ -194,7 +198,11 @@ const MessageInput = () => (
   />
 );
 
-function Page({ chat, id }: { chat: any; id?: string }) {
+function Page() {
+  const chat = useSelectedChatStore(state => state.selectedChat);
+
+  console.log("Chat according to Page: ", chat);
+
   if (!chat) {
     return (
       <article className="h-full flex flex-col justify-center items-center w-full">

@@ -83,15 +83,16 @@ const ChatCard = ({ chat }: { chat: Chat }) => {
         className="w-12 h-12 text-sm"
         showFallback
         isBordered
+        radius="full"
         color="default"
-        name={chat.users[0].user.name}
-        src={chat.users[0].user.image || "/images/user.png"}
+        name={chat.user.name}
+        src={chat.user.image || "/images/user.png"}
       />
 
       <article>
-        <h3 className="text-md font-medium">{chat.users[0].user.name}</h3>
+        <h3 className="text-md font-medium">{chat.user.name}</h3>
         <p className="text-primary text-regular text-xs">
-          {chat.type}
+          {chat?.chat.type}
           {/* chat.lastMessage.content.substring(0, 20).concat("...") */}
         </p>
       </article>
@@ -137,13 +138,13 @@ const LeftBar = ({ chats }: { chats: any }) => {
         {filteredChats ? (
           filteredChats.length > 0 ? (
             filteredChats.map((chat: any) => (
-              <ChatCard key={chat.id} chat={chat.chat} />
+              <ChatCard key={chat.id} chat={chat} />
             ))
           ) : (
             <NoChatsFound />
           )
         ) : chats.length > 0 ? (
-          chats.map((chat: any) => <ChatCard key={chat.id} chat={chat.chat} />)
+          chats.map((chat: any) => <ChatCard key={chat.id} chat={chat} />)
         ) : (
           <NoChatsFound />
         )}
