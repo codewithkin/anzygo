@@ -19,16 +19,16 @@ export default function ChatInfo({ chat }: { chat: any }) {
       <article className="flex flex-col gap-2 max-w-[300px] text-slate-800 font-semibold">
         <Card className="max-h-[300px] min-w-[300px] overflow-y-scroll">
           <CardHeader className="w-full items-center justify-between">
-            <CardTitle>Chat Info</CardTitle>
+            <CardTitle className="text-xl">Chat Info</CardTitle>
           </CardHeader>
 
           <CardContent>
             <article className="flex flex-col gap-1">
-              <h4 className="font-semibold text-sm">Files</h4>
+              <h4 className="font-semibold ">Files</h4>
               <article className="flex flex-col gap-4">
                 <article className="flex flex-col gap-2">
                   <article className="w-full flex justify-between items-center">
-                    <article className="flex items-center gap-2 text-xs">
+                    <article className="flex items-center gap-2 text-sm font-normal">
                       <PictureInPicture2 size={20} strokeWidth={1} />
                       <p>265 Photos</p>
                     </article>
@@ -50,7 +50,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
 
                 <article className="flex flex-col gap-2">
                   <article className="w-full flex justify-between items-center">
-                    <article className="flex items-center gap-2 text-xs">
+                    <article className="flex items-center gap-2 text-sm font-normal">
                       <Video size={20} strokeWidth={1} />
                       <p>27 Videos</p>
                     </article>
@@ -60,7 +60,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
 
                 <article className="flex flex-col gap-2">
                   <article className="w-full flex justify-between items-center">
-                    <article className="flex items-center gap-2 text-xs">
+                    <article className="flex items-center gap-2 text-sm font-normal">
                       <File size={20} strokeWidth={1} />
                       <p>375 Files</p>
                     </article>
@@ -70,7 +70,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
 
                 <article className="flex flex-col gap-2">
                   <article className="w-full flex justify-between items-center">
-                    <article className="flex items-center gap-2 text-xs">
+                    <article className="flex items-center gap-2 text-sm font-normal">
                       <Link size={20} strokeWidth={1} />
                       <p>20 Shared Links</p>
                     </article>
@@ -80,7 +80,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
 
                 <article className="flex flex-col gap-2">
                   <article className="w-full flex justify-between items-center">
-                    <article className="flex items-center gap-2 text-xs">
+                    <article className="flex items-center gap-2 text-sm font-normal">
                       <Music size={20} strokeWidth={1} />
                       <p>12 Audio Files</p>
                     </article>
@@ -90,7 +90,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
 
                 <article className="flex flex-col gap-2">
                   <article className="w-full flex justify-between items-center">
-                    <article className="flex items-center gap-2 text-xs">
+                    <article className="flex items-center gap-2 text-sm font-normal">
                       <Mic size={20} strokeWidth={1} />
                       <p>90 Voice Messages</p>
                     </article>
@@ -112,7 +112,7 @@ export default function ChatInfo({ chat }: { chat: any }) {
               <article className="flex gap-2 items-center" key={person.name}>
                 <Avatar src={person.avatar} radius="sm" name={person.name} />
 
-                <h2 className="text-sm font-semibold">{person.name}</h2>
+                <h2 className=" font-semibold">{person.name}</h2>
               </article>
             ))}
           </CardContent>

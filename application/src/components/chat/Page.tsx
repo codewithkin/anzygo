@@ -1,12 +1,39 @@
 import { Avatar } from "@heroui/avatar";
 import { Input } from "@heroui/input";
-import { Box, Eye, EyeClosedIcon, MessagesSquare, Mic, MoreHorizontal, Paperclip, Phone, Search, SendHorizontal } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Box,
+  Eye,
+  EyeClosedIcon,
+  MessagesSquare,
+  Mic,
+  MoreHorizontal,
+  Paperclip,
+  Phone,
+  Search,
+  SendHorizontal,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const StatusIndicator = ({ status }: { status: "online" | "offline" | "typing" }) => (
+const StatusIndicator = ({
+  status,
+}: {
+  status: "online" | "offline" | "typing";
+}) => (
   <article className="flex gap-1 items-center">
     <article
       className={`w-2 h-2 rounded-full ${
@@ -52,27 +79,22 @@ const Tools = () => (
         </TooltipTrigger>
         <TooltipContent>Call</TooltipContent>
       </Tooltip>
-      <Tooltip>
-        <TooltipTrigger>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-                <MoreHorizontal
-                  strokeWidth={1}
-                  className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
-                />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </TooltipTrigger>
-        <TooltipContent>More options</TooltipContent>
-      </Tooltip>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <MoreHorizontal
+            strokeWidth={1}
+            className="text-slate-400 hover:cursor-pointer hover:text-slate-800 transition duration-300"
+          />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>Billing</DropdownMenuItem>
+          <DropdownMenuItem>Team</DropdownMenuItem>
+          <DropdownMenuItem>Subscription</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </TooltipProvider>
   </article>
 );
