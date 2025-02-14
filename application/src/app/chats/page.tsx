@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { createChat } from "@/helpers/queries/createChat";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
 import useQueryStore from "@/providers/CustomQueryClientProvider";
+import { ChatsType } from "@/types";
 
 export default function Chats() {
   const { data, isPending } = useQuery({
@@ -18,8 +19,10 @@ export default function Chats() {
     queryFn: getUser,
   });
 
+  console.log("DATA: ", data);
+
   // Get the user's chats
-  const chats: any | null = data?.chats || [];
+  const chats: ChatsType = data?.chats || [];
 
   // Get the query client
   const queryClient = useQueryStore((state) => state.queryClient);

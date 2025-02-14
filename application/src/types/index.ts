@@ -45,7 +45,7 @@ model ChatUser {
 }
 */
 
-export type User = {
+export type UserType = {
   id: string;
   email: string;
   emailVerified: string;
@@ -60,7 +60,7 @@ export type User = {
   updatedAt: string;
 };
 
-export type Chat = {
+export type ChatType = {
   id: string;
   type: "private" | "group";
   name: string | null;
@@ -71,4 +71,4 @@ export type Chat = {
   updatedAt: string;
 };
 
-export type Chats = Chat[];
+export type ChatsType = ChatType[];
