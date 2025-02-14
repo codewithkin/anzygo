@@ -36,6 +36,7 @@ import { useEffect, useState } from "react";
 import socket from "@/helpers/misc/socket";
 import { getUser } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
+import { useUserInfo } from "@/stores/useUserInfo";
 
 const StatusIndicator = ({
   status,
@@ -227,15 +228,9 @@ const MessageInput = ({ roomId, messages }: {roomId?: string, messages: any}) =>
 function Page() {
   const chat = useSelectedChatStore((state) => state.selectedChat);
 
-  // Fetch the user's session info
-  const { data } = useQuery({
-    queryKey: ["getUser"],
-    queryFn: async () => await getUser(),
-  });
+  const user = useUserInfo();
 
-  const email = data?.email;
-
-  console.log("NAME: ", email)
+  console.log("Emaiiiiiiiiiiiiiiiiiiiiiiil: ", user.email)
 
   const [messages, setMessages] = useState<{roomId: string, email: string, message: string}[]>([]);
 
