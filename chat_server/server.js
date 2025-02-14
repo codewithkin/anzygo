@@ -23,10 +23,10 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("user-joined", socket.id);
   })
 
-  socket.on("send-dm", ({roomId, message}) => {
+  socket.on("send-dm", ({roomId, name, message}) => {
     console.log("DM received: ", message);
-    
-    io.to(roomId).emit("receive-dm", {roomId, message});
+
+    io.to(roomId).emit("receive-dm", {roomId, name, message});
   })
 
   socket.on("disconnect", () => {
