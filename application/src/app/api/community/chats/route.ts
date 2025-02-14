@@ -13,6 +13,7 @@
 import { auth } from "@/auth";
 import { getUser } from "@/lib/actions";
 import { prisma } from "@/prisma";
+import { UserType } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -21,9 +22,9 @@ export async function POST(request: NextRequest) {
     const id = request.nextUrl.searchParams.get("id") || "";
 
     // Check if the user is authenticated, and get the user's id
-    const user = await getUser();
+    const data: { user: UserType } = await getUser();
 
-    const userId = user?.id;
+    const userId = data?.user?.id;
 
     // If the user is not authenticated, return a 401 error
     if (!userId) {

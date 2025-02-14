@@ -33,10 +33,15 @@ export const getUser = async () => {
     where: {
       users: {
         some: {
-          userId: chatUser?.id
+          id: {
+            in: [chatUser?.id || ""]
+          }
         }
       }
     },
+    include: {
+      users: true
+    }
   })
 
   console.log("This user's chats: ", chats);
