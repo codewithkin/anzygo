@@ -228,9 +228,13 @@ const MessageInput = ({ roomId, messages }: {roomId?: string, messages: any}) =>
 function Page() {
   const chat = useSelectedChatStore((state) => state.selectedChat);
 
-  const user = useUserInfo();
+  const user = useUserInfo(state => state.userInfo);
 
-  console.log("Emaiiiiiiiiiiiiiiiiiiiiiiil: ", user.email)
+  if(!user) return <h2>No user here</h2>;
+
+  const email = user.email;
+
+  console.log("Emaiiiiiiiiiiiiiiiiiiiiiiil: ", email)
 
   const [messages, setMessages] = useState<{roomId: string, email: string, message: string}[]>([]);
 
