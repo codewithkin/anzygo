@@ -108,7 +108,13 @@ const Tools = () => (
   </article>
 );
 
-const Header = ({ user, status }: { user: any, status: "Away" | "Online" | "Typing" }) => {
+const Header = ({
+  user,
+  status,
+}: {
+  user: any;
+  status: "Away" | "Online" | "Typing";
+}) => {
   console.log("User according to Header: ", user);
 
   return (
@@ -145,22 +151,42 @@ export type Message = {
   };
 };
 
-const Messages = ({ messageData, email }: { email: any, messageData: {roomId: string, email: string, message: string}[] }) => {
+const Messages = ({
+  messageData,
+}: {
+  email: any;
+  messageData: { roomId: string; email: string; message: string }[];
+}) => {
+
   useEffect(() => {
     console.log("Message data: ", messageData);
-  }, [messageData])
+  }, [messageData]);
+
+  const user = useUserInfo((state) => state.userInfo);
+
+  if (!user) {
+    console.log("ALERT: No user", user);
+  }
+
+  const email = user.email;
+
+  console.log("Emaiiiiiiiiiiiiiiiiiiiiiiil: ", email);
 
   return (
     <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll">
       {messageData.length > 0 ? (
-        messageData.map((message: {roomId: string, email: string, message: string}) => (
-          <article className={`rounded-xl p-4`} key={message.message}>
-            {/* Message content */}
-            <article className={`${email == message.email ? "bg-primary text-white" : "bg-slate-500 text-white"}`}>
-              <p>{message.message}</p>
+        messageData.map(
+          (message: { roomId: string; email: string; message: string }) => (
+            <article className={`rounded-xl p-4`} key={message.message}>
+              {/* Message content */}
+              <article
+                className={`${email == message.email ? "bg-primary text-white" : "bg-slate-500 text-white"}`}
+              >
+                <p>{message.message}</p>
+              </article>
             </article>
-          </article>
-        ))
+          ),
+        )
       ) : (
         <article className="w-full h-full flex flex-col justify-center items-center">
           <h3 className="font-semibold text-xl">No messages yet</h3>
@@ -168,18 +194,23 @@ const Messages = ({ messageData, email }: { email: any, messageData: {roomId: st
         </article>
       )}
     </article>
-  )
+  );
 };
 
-const MessageInput = ({ roomId, messages }: {roomId?: string, messages: any}) => {
-
+const MessageInput = ({
+  roomId,
+  messages,
+}: {
+  roomId?: string;
+  messages: any;
+}) => {
   // Fetch the user's session info
   const { data } = useQuery({
     queryKey: ["getUser"],
     queryFn: async () => await getUser(),
   });
 
-  console.log("Data according to message input: ", data)
+  console.log("Data according to message input: ", data);
 
   const [message, setMessage] = useState<string | undefined>("");
 
@@ -187,19 +218,20 @@ const MessageInput = ({ roomId, messages }: {roomId?: string, messages: any}) =>
     if (socket) {
       socket.emit("send-dm", { roomId, email: data?.email || "misc", message });
     }
-  }
+  };
 
   return (
-    <form onSubmit={(e) => {
-      e.preventDefault();
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
 
+        if (message && message?.length > 0) {
+          sendMessage();
+        }
 
-      if(message && message?.length > 0) {
-        sendMessage();
-      }
-
-      setMessage("");
-    }}>
+        setMessage("");
+      }}
+    >
       <Input
         className="py-2 justify-end flex flex-col"
         classNames={{
@@ -216,46 +248,49 @@ const MessageInput = ({ roomId, messages }: {roomId?: string, messages: any}) =>
           <article className="flex items-center gap-2">
             <Mic className="text-slate-400" size={20} strokeWidth={1} />
             <Button type="submit" size="icon">
-              <SendHorizontal className="text-white" size={20} strokeWidth={1} />
+              <SendHorizontal
+                className="text-white"
+                size={20}
+                strokeWidth={1}
+              />
             </Button>
           </article>
         }
       />
     </form>
-  )
+  );
 };
 
 function Page() {
   const chat = useSelectedChatStore((state) => state.selectedChat);
 
-  const user = useUserInfo(state => state.userInfo);
+  console.log("chat according to chat: ", chat);
 
-  if(!user) return <h2>No user here</h2>;
-
-  const email = user.email;
-
-  console.log("Emaiiiiiiiiiiiiiiiiiiiiiiil: ", email)
-
-  const [messages, setMessages] = useState<{roomId: string, email: string, message: string}[]>([]);
+  const [messages, setMessages] = useState<
+    { roomId: string; email: string; message: string }[]
+  >([]);
 
   useEffect(() => {
     // Listen for messages from server
-    if (socket) {
-      socket.on("receive-dm", (data: { roomId: string, email:  string, message: string }) => {
-        console.log("DM received client-side: ", data);
+    if (socket && chat) {
+      socket.on(
+        "receive-dm",
+        (data: { roomId: string; email: string; message: string }) => {
+          console.log("DM received client-side: ", data);
 
-        setMessages((prev) => [...prev, data]);
-      });
+          setMessages((prev) => [...prev, data]);
+        },
+      );
 
       socket.on("user-joined", (data) => {
         console.log("User joined our room: ", data);
 
         setStatus("Online");
-      })
+      });
 
       socket.on("disconnect", () => {
         setStatus("Away");
-      })
+      });
 
       return () => {
         socket.off("message");
@@ -272,6 +307,8 @@ function Page() {
 
   // Track the other user's status
   const [status, setStatus] = useState<"Away" | "Online" | "Typing">("Away");
+
+  console.log("Chat according to page :", chat)
 
   if (!chat) {
     return (
@@ -296,7 +333,7 @@ function Page() {
   return (
     <article className="h-full flex flex-col justify-between w-3/4">
       <Header status={status} user={chat?.user} />
-      <Messages email={email} messageData={messages} />
+      <Messages messageData={messages} />
       <MessageInput messages={messages} roomId={chat?.id} />
     </article>
   );

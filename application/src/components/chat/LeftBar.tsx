@@ -62,10 +62,10 @@ const ChatCard = ({ chat }: { chat: ChatType }) => {
   );
 
   // Get the receiving user's data
-  const {data} = useQuery({
+  const { data } = useQuery({
     queryKey: ["getSpecificUser"],
-    queryFn: async () => await getSpecificUser(chat.users[1].id)
-  })
+    queryFn: async () => await getSpecificUser(chat.users[1].id),
+  });
 
   return (
     <article

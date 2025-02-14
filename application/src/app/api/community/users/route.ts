@@ -12,7 +12,6 @@ import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-
 export async function GET(request: NextRequest) {
   try {
     // Get the user's id from the auth session
