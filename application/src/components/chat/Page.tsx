@@ -119,11 +119,11 @@ const Header = ({ user, status }: { user: any, status: "Away" | "Online" | "Typi
             showFallback
             isBordered
             color="primary"
-            name={user?.name}
+            email={user?.email}
             radius="full"
             src={user?.image}
           />
-          <h2 className="text-xl font-semibold">{user?.name}</h2>
+          <h2 className="text-xl font-semibold">{user?.email}</h2>
         </article>
         <StatusIndicator status={status} />
       </article>
@@ -134,7 +134,7 @@ const Header = ({ user, status }: { user: any, status: "Away" | "Online" | "Typi
 
 export type Message = {
   user: {
-    name: string;
+    email: string;
     avatar: string;
   };
   message: string;
@@ -144,7 +144,7 @@ export type Message = {
   };
 };
 
-const Messages = ({ messageData }: { messageData: {roomId: string, name: string, message: string}[] }) => {
+const Messages = ({ messageData, email }: { email: any, messageData: {roomId: string, email: string, message: string}[] }) => {
   useEffect(() => {
     console.log("Message data: ", messageData);
   }, [messageData])
@@ -152,8 +152,13 @@ const Messages = ({ messageData }: { messageData: {roomId: string, name: string,
   return (
     <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll">
       {messageData.length > 0 ? (
-        messageData.map((message: {roomId: string, name: string, message: string}) => (
-          <h2 key={message.message}>{message.message}</h2>
+        messageData.map((message: {roomId: string, email: string, message: string}) => (
+          <article className={`rounded-xl p-4`} key={message.message}>
+            {/* Message content */}
+            <article className={`${email == message.email ? "bg-primary text-white" : "bg-slate-500 text-white"}`}>
+              <p>{message.message}</p>
+            </article>
+          </article>
         ))
       ) : (
         <article className="w-full h-full flex flex-col justify-center items-center">
@@ -173,11 +178,13 @@ const MessageInput = ({ roomId, messages }: {roomId?: string, messages: any}) =>
     queryFn: async () => await getUser(),
   });
 
+  console.log("Data according to message input: ", data)
+
   const [message, setMessage] = useState<string | undefined>("");
 
   const sendMessage = () => {
     if (socket) {
-      socket.emit("send-dm", { roomId, name: data?.name || "misc", message });
+      socket.emit("send-dm", { roomId, email: data?.email || "misc", message });
     }
   }
 
@@ -220,12 +227,22 @@ const MessageInput = ({ roomId, messages }: {roomId?: string, messages: any}) =>
 function Page() {
   const chat = useSelectedChatStore((state) => state.selectedChat);
 
-  const [messages, setMessages] = useState<{roomId: string, name: string, message: string}[]>([]);
+  // Fetch the user's session info
+  const { data } = useQuery({
+    queryKey: ["getUser"],
+    queryFn: async () => await getUser(),
+  });
+
+  const email = data?.email;
+
+  console.log("NAME: ", email)
+
+  const [messages, setMessages] = useState<{roomId: string, email: string, message: string}[]>([]);
 
   useEffect(() => {
     // Listen for messages from server
     if (socket) {
-      socket.on("receive-dm", (data: { roomId: string, name:  string, message: string }) => {
+      socket.on("receive-dm", (data: { roomId: string, email:  string, message: string }) => {
         console.log("DM received client-side: ", data);
 
         setMessages((prev) => [...prev, data]);
@@ -280,7 +297,7 @@ function Page() {
   return (
     <article className="h-full flex flex-col justify-between w-3/4">
       <Header status={status} user={chat?.user} />
-      <Messages messageData={messages} />
+      <Messages email={email} messageData={messages} />
       <MessageInput messages={messages} roomId={chat?.id} />
     </article>
   );

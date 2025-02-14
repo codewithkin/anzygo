@@ -20,13 +20,13 @@ io.on("connection", (socket) => {
     socket.join(roomId);
 
     // Notify all other users
-    socket.to(roomId).emit("user-joined", socket.id);
+    socket.to(roomId).emit("user-joined", roomId);
   })
 
-  socket.on("send-dm", ({roomId, name, message}) => {
+  socket.on("send-dm", ({roomId, email, message}) => {
     console.log("DM received: ", message);
 
-    io.to(roomId).emit("receive-dm", {roomId, name, message});
+    io.to(roomId).emit("receive-dm", {roomId, email, message});
   })
 
   socket.on("disconnect", () => {
