@@ -34,17 +34,19 @@ import { urls } from "@/lib/urls";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import socket from "@/helpers/misc/socket";
+import { getUser } from "@/lib/actions";
+import { useQuery } from "@tanstack/react-query";
 
 const StatusIndicator = ({
   status,
 }: {
-  status: "online" | "offline" | "typing";
+  status: "Away" | "Online" | "Typing";
 }) => (
   <article className="flex gap-1 items-center">
     <article
       className={`w-2 h-2 rounded-full ${
-        status !== "online"
-          ? status === "offline"
+        status !== "Online"
+          ? status === "Away"
             ? "bg-red-400"
             : "bg-orange-400"
           : "bg-green-400"
@@ -52,8 +54,8 @@ const StatusIndicator = ({
     ></article>
     <p
       className={`${
-        status !== "online"
-          ? status === "offline"
+        status !== "Online"
+          ? status === "Away"
             ? "text-red-400"
             : "text-orange-400"
           : "text-green-400"
@@ -105,9 +107,7 @@ const Tools = () => (
   </article>
 );
 
-const Header = ({ user }: { user: any }) => {
-  let status = user?.status;
-
+const Header = ({ user, status }: { user: any, status: "Away" | "Online" | "Typing" }) => {
   console.log("User according to Header: ", user);
 
   return (
@@ -144,7 +144,7 @@ export type Message = {
   };
 };
 
-const Messages = ({ messageData }: { messageData: Message[] }) => {
+const Messages = ({ messageData }: { messageData: {roomId: string, name: string, message: string}[] }) => {
   useEffect(() => {
     console.log("Message data: ", messageData);
   }, [messageData])
@@ -152,8 +152,8 @@ const Messages = ({ messageData }: { messageData: Message[] }) => {
   return (
     <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll">
       {messageData.length > 0 ? (
-        messageData.map((message: Message) => (
-          <h2>Hello</h2>
+        messageData.map((message: {roomId: string, name: string, message: string}) => (
+          <h2 key={message.message}>{message.message}</h2>
         ))
       ) : (
         <article className="w-full h-full flex flex-col justify-center items-center">
@@ -165,15 +165,19 @@ const Messages = ({ messageData }: { messageData: Message[] }) => {
   )
 };
 
-const MessageInput = ({ roomId, updateFunction, messages }: {roomId?: string, updateFunction: any, messages: any}) => {
+const MessageInput = ({ roomId, messages }: {roomId?: string, messages: any}) => {
+
+  // Fetch the user's session info
+  const { data } = useQuery({
+    queryKey: ["getUser"],
+    queryFn: async () => await getUser(),
+  });
+
   const [message, setMessage] = useState<string | undefined>("");
 
   const sendMessage = () => {
     if (socket) {
-      socket.emit("send-dm", { roomId, message });
-
-      // Update the messages
-      updateFunction([ ...messages, message ]);
+      socket.emit("send-dm", { roomId, name: data?.name || "misc", message });
     }
   }
 
@@ -216,23 +220,32 @@ const MessageInput = ({ roomId, updateFunction, messages }: {roomId?: string, up
 function Page() {
   const chat = useSelectedChatStore((state) => state.selectedChat);
 
-  console.log("Chat according to Page: ", chat);
-
-  const [messages, setMessages] = useState<string[]>([]);
-  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<{roomId: string, name: string, message: string}[]>([]);
 
   useEffect(() => {
     // Listen for messages from server
     if (socket) {
-      socket.on("message", (msg: string) => {
-        setMessages((prev) => [...prev, msg]);
+      socket.on("receive-dm", (data: { roomId: string, name:  string, message: string }) => {
+        console.log("DM received client-side: ", data);
+
+        setMessages((prev) => [...prev, data]);
       });
+
+      socket.on("user-joined", (data) => {
+        console.log("User joined our room: ", data);
+
+        setStatus("Online");
+      })
+
+      socket.on("disconnect", () => {
+        setStatus("Away");
+      })
 
       return () => {
         socket.off("message");
       };
     }
-  }, []);
+  }, [socket]);
 
   // Connect to a room
   useEffect(() => {
@@ -241,12 +254,8 @@ function Page() {
     }
   }, [chat, socket]);
 
-  const sendMessage = () => {
-    if (message.trim() && socket) {
-      socket.emit("message", message);
-      setMessage("");
-    }
-  };
+  // Track the other user's status
+  const [status, setStatus] = useState<"Away" | "Online" | "Typing">("Away");
 
   if (!chat) {
     return (
@@ -270,9 +279,9 @@ function Page() {
 
   return (
     <article className="h-full flex flex-col justify-between w-3/4">
-      <Header user={chat?.user} />
+      <Header status={status} user={chat?.user} />
       <Messages messageData={messages} />
-      <MessageInput messages={messages} updateFunction={setMessages} roomId={chat?.id} />
+      <MessageInput messages={messages} roomId={chat?.id} />
     </article>
   );
 }

@@ -16,15 +16,17 @@ io.on("connection", (socket) => {
 
   socket.on("join-chat", (roomId) => {
     console.log("A user joined the room: ", roomId);  
+
+    socket.join(roomId);
+
+    // Notify all other users
+    socket.to(roomId).emit("user-joined", socket.id);
   })
 
   socket.on("send-dm", ({roomId, message}) => {
     console.log("DM received: ", message);
-    io.to(roomId).emit("receive-dm", message);
-  })
-
-  socket.on("receive-dm", (message) => {
-    console.log("DM received: ", message);
+    
+    io.to(roomId).emit("receive-dm", {roomId, message});
   })
 
   socket.on("disconnect", () => {

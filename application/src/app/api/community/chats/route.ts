@@ -13,7 +13,6 @@
 import { auth } from "@/auth";
 import { getUser } from "@/lib/actions";
 import { prisma } from "@/prisma";
-import { Variable } from "lucide-react";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
