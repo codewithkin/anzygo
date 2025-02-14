@@ -12,10 +12,30 @@ import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Avatar } from "@heroui/avatar";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
+import { UserType } from "@/types";
+import { useUserInfo } from "@/stores/useUserInfo";
+import { useForeignUser } from "@/stores/useForeignUser";
 
 export default function ChatInfo() {
   const chat = useSelectedChatStore((state) => state.selectedChat);
-  const people = chat?.chat?.users || [];
+  const people: UserType[] = [];
+
+  // Get the foreign user
+  const foreignUser = useForeignUser(state => state.foreignUser);
+
+  const user = useUserInfo(state => state.userInfo);
+
+  if(!people || !user || !foreignUser) {
+    console.log("NO PEOPLE HERE");
+
+      return
+  }
+
+  // Set person #1 to be the logged in user
+  people[0] = user;
+
+  // Set the second user to be the foreign user
+  people[1] = foreignUser;
 
   return (
     chat && (
@@ -104,16 +124,16 @@ export default function ChatInfo() {
           </CardHeader>
 
           <CardContent className="flex flex-col gap-2">
-            {people.map((person: { avatar: string; name: string }) => (
+            {people.map((person: UserType) => (
               <article className="flex gap-2 items-center" key={person?.id}>
                 <Avatar
-                  src={person?.user?.image}
+                  src={person?.image}
                   radius="md"
                   size="md"
-                  name={person?.user?.name || "Kin"}
+                  name={person?.name || "Kin"}
                 />
 
-                <h2 className=" font-semibold">{person?.user?.name}</h2>
+                <h2 className=" font-semibold">{person?.name}</h2>
               </article>
             ))}
           </CardContent>

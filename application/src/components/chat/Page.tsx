@@ -38,6 +38,7 @@ import { getSpecificUser, getUser } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
 import { useUserInfo } from "@/stores/useUserInfo";
 import { ChatType, UserType } from "@/types";
+import { useForeignUser } from "@/stores/useForeignUser";
 
 const StatusIndicator = ({
   status,
@@ -114,7 +115,7 @@ const Header = ({
   user,
 }: {
   status: "Away" | "Online" | "Typing";
-  user: UserType | undefined
+  user: UserType | null | undefined
 }) => {
 
   return (
@@ -264,11 +265,8 @@ function Page({chat}: { chat: ChatType }) {
     return;
   }
 
-  // Fetch the (other) user's data
-  const { data } = useQuery({
-    queryKey: ["specificUser"],
-    queryFn: async () => await getSpecificUser(chat.users[1].id)
-  })
+  // Get the foreign user's data
+  const foreignUser = useForeignUser(state => state.foreignUser);
 
   const [messages, setMessages] = useState<
     { roomId: string; email: string; message: string }[]
@@ -336,7 +334,7 @@ function Page({chat}: { chat: ChatType }) {
 
   return (
     <article className="h-full flex flex-col justify-between w-3/4">
-      <Header user={data} status={status} />
+      <Header user={foreignUser} status={status} />
       <Messages messageData={messages} />
       <MessageInput messages={messages} roomId={chat?.id} />
     </article>
