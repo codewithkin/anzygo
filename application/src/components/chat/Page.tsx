@@ -34,9 +34,10 @@ import { urls } from "@/lib/urls";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import socket from "@/helpers/misc/socket";
-import { getUser } from "@/lib/actions";
+import { getSpecificUser, getUser } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
 import { useUserInfo } from "@/stores/useUserInfo";
+import { ChatType, UserType } from "@/types";
 
 const StatusIndicator = ({
   status,
@@ -109,13 +110,12 @@ const Tools = () => (
 );
 
 const Header = ({
-  user,
   status,
+  user,
 }: {
-  user: any;
   status: "Away" | "Online" | "Typing";
+  user: UserType | undefined
 }) => {
-  console.log("User according to Header: ", user);
 
   return (
     <article className="w-full flex justify-between items-center py-2">
@@ -126,7 +126,7 @@ const Header = ({
             showFallback
             isBordered
             color="primary"
-            email={user?.email}
+            name={user?.email || ""}
             radius="full"
             src={user?.image}
           />
@@ -154,7 +154,6 @@ export type Message = {
 const Messages = ({
   messageData,
 }: {
-  email: any;
   messageData: { roomId: string; email: string; message: string }[];
 }) => {
 
@@ -168,7 +167,7 @@ const Messages = ({
     console.log("ALERT: No user", user);
   }
 
-  const email = user.email;
+  const email = user?.email;
 
   console.log("Emaiiiiiiiiiiiiiiiiiiiiiiil: ", email);
 
@@ -205,18 +204,15 @@ const MessageInput = ({
   messages: any;
 }) => {
   // Fetch the user's session info
-  const { data } = useQuery({
-    queryKey: ["getUser"],
-    queryFn: async () => await getUser(),
-  });
+  const user = useUserInfo(state => state.userInfo);
 
-  console.log("Data according to message input: ", data);
+  console.log("Data according to message input: ", user);
 
   const [message, setMessage] = useState<string | undefined>("");
 
   const sendMessage = () => {
     if (socket) {
-      socket.emit("send-dm", { roomId, email: data?.email || "misc", message });
+      socket.emit("send-dm", { roomId, email: user?.email || "misc", message });
     }
   };
 
@@ -261,10 +257,18 @@ const MessageInput = ({
   );
 };
 
-function Page() {
-  const chat = useSelectedChatStore((state) => state.selectedChat);
+function Page({chat}: { chat: ChatType }) {
 
-  console.log("chat according to chat: ", chat);
+  if(!chat) {
+    console.log("ALERT: NO TYPE");
+    return;
+  }
+
+  // Fetch the (other) user's data
+  const { data } = useQuery({
+    queryKey: ["specificUser"],
+    queryFn: async () => await getSpecificUser(chat.users[1].id)
+  })
 
   const [messages, setMessages] = useState<
     { roomId: string; email: string; message: string }[]
@@ -332,7 +336,7 @@ function Page() {
 
   return (
     <article className="h-full flex flex-col justify-between w-3/4">
-      <Header status={status} user={chat?.user} />
+      <Header user={data} status={status} />
       <Messages messageData={messages} />
       <MessageInput messages={messages} roomId={chat?.id} />
     </article>
