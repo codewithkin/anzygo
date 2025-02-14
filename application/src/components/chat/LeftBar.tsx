@@ -8,8 +8,11 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Dispatch, useEffect, useState } from "react";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
+import { ChatsType, ChatType } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { getSpecificUser } from "@/lib/actions";
 
-const SearchBar = ({ chats }: { chats: any }) => {
+const SearchBar = ({ chats }: { chats: ChatsType }) => {
   const [filteredChats, setFilteredChats] = useState<any | null>(null);
   const setSelectedChat = useSelectedChatStore(
     (state) => state.setSelectedChat,
@@ -53,26 +56,16 @@ const SearchBar = ({ chats }: { chats: any }) => {
   );
 };
 
-export interface Chat {
-  createdAt: Date;
-  id: string;
-  image: string | null;
-  name: string | null;
-  type: "private" | "group";
-  updatedAt: Date;
-  users: {
-    user: {
-      id: string;
-      name: string;
-      image: string | null;
-    };
-  }[];
-}
-
-const ChatCard = ({ chat }: { chat: Chat }) => {
+const ChatCard = ({ chat }: { chat: ChatType }) => {
   const setSelectedChat = useSelectedChatStore(
     (state) => state.setSelectedChat,
   );
+
+  // Get the receiving user's data
+  const {data} = useQuery({
+    queryKey: ["getSpecificUser"],
+    queryFn: async () => await getSpecificUser(chat.users[1].id)
+  })
 
   return (
     <article
@@ -85,14 +78,14 @@ const ChatCard = ({ chat }: { chat: Chat }) => {
         isBordered
         radius="full"
         color="default"
-        name={chat.user.name}
-        src={chat.user.image || "/images/user.png"}
+        name={data?.name}
+        src={data?.image || "/images/user.png"}
       />
 
       <article>
-        <h3 className="text-md font-medium">{chat.user.name}</h3>
+        <h3 className="text-md font-medium">{data?.name}</h3>
         <p className="text-primary text-regular text-xs">
-          {chat?.chat.type}
+          {chat?.type}
           {/* chat.lastMessage.content.substring(0, 20).concat("...") */}
         </p>
       </article>

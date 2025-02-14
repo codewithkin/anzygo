@@ -21,6 +21,8 @@ export const getUser = async () => {
     },
   });
 
+  console.log("This user: ", user);
+
   const chatUser = await prisma.chatUser.findFirst({
     where: {
       userId: user?.id,
@@ -50,14 +52,33 @@ export const getUser = async () => {
 };
 
 export const getSpecificUser = async (id: string) => {
-  const user = await prisma.user.findUnique({
+  // Find a chatUser with the corresponding id
+  const chatUser = await prisma.chatUser.findFirst({
     where: {
       id,
-    },
-    include: {
-      messages: true,
+    }
+  })
+
+  // Now find the user that the chatUser belongs to
+  const user = await prisma.user.findUnique({
+    where: {
+      id: chatUser?.userId,
+    }
+  })
+
+  console.log("SPECIFIC USER GOTTEN: ", user);
+
+  return user;
+};
+
+export const getChatUsersInfo = async (ids: string[]) => {
+  const chatUsers = await prisma.chatUser.findMany({
+    where: {
+      id: {
+        in: ids,
+      },
     },
   });
 
-  return user;
+  return chatUsers;
 };

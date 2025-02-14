@@ -43,6 +43,36 @@ model ChatUser {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+Chat example:
+[
+    {
+        "id": "cm74idbrl000ea19e2x67mjsp",
+        "type": "private",
+        "name": null,
+        "image": null,
+        "createdAt": "2025-02-14T08:30:06.033Z",
+        "updatedAt": "2025-02-14T08:30:06.033Z",
+        "users": [
+            {
+                "id": "cm74idbsd000fa19e9s6grvsf",
+                "userId": "cm74icql80009a19ed2i7egub",
+                "chatId": "cm74idbrl000ea19e2x67mjsp",
+                "role": "admin",
+                "createdAt": "2025-02-14T08:30:06.062Z",
+                "updatedAt": "2025-02-14T08:30:06.062Z"
+            },
+            {
+                "id": "cm74idbsd000ga19ewlnapmw5",
+                "userId": "cm74ic6ph0008a19elyh3wus5",
+                "chatId": "cm74idbrl000ea19e2x67mjsp",
+                "role": "admin",
+                "createdAt": "2025-02-14T08:30:06.062Z",
+                "updatedAt": "2025-02-14T08:30:06.062Z"
+            }
+        ]
+    }
+]
 */
 
 export type UserType = {
@@ -65,10 +95,18 @@ export type ChatType = {
   type: "private" | "group";
   name: string | null;
   image: string | null;
-  users: any[];
-  messages: any[];
   createdAt: string;
   updatedAt: string;
+  users: {
+    id: string;
+    userId: string;
+    chatId: string;
+    role: "admin" | "member";
+    user: UserType;
+    chat: ChatType;
+    createdAt: string;
+    updatedAt: string;
+  }[];
 };
 
 export type ChatsType = ChatType[];
