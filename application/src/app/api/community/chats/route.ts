@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     const existingChat = await prisma.chat.findFirst({
       where: {
         type: "private",
-        users: {
+        chatUsers: {
           every: {
             id: {
               in: [receivingUser?.id || "", thisUser?.id || ""],
@@ -106,8 +106,8 @@ export async function POST(request: NextRequest) {
           },
         },
         AND: [
-          { users: { some: { id: receivingUser?.id } } },
-          { users: { some: { id: thisUser?.id } } },
+          { chatUsers: { some: { id: receivingUser?.id } } },
+          { chatUsers: { some: { id: thisUser?.id } } },
         ],
       },
     });
@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
       newChat = await prisma.chat.create({
         data: {
           type: "private",
-          users: {
+          chatUsers: {
             connect: [
               {
                 id: thisUser?.id,

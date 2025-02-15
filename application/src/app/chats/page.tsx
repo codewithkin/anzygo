@@ -48,8 +48,8 @@ export default function Chats() {
   const setForeignUser = useForeignUser((state) => state.setForeignUser);
 
   // Identify the foreign user (opposite user)
-  const foreignUserId = selectedChat?.users?.find(
-    (user: UserType) => user.id !== data?.chatUser?.id,
+  const foreignUserId = selectedChat?.chatUsers?.find(
+    (user: UserType) => user.userId !== data?.user?.id,
   )?.id;
 
   // Fetch the foreign user only when `foreignUserId` exists

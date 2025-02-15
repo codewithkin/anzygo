@@ -3,12 +3,12 @@ export type UserType = {
   email: string;
   emailVerified: Date | null | string;
   public: boolean;
-  name: string;
-  image: string;
-  bio: string;
+  name: string | null;
+  image: string | null;
+  bio: string | null;
   status: string;
   theme: string;
-  settings: any;
+  settings: Record<string, unknown>;
   createdAt: Date | string;
   updatedAt: Date | string;
 };

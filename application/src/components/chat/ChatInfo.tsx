@@ -31,11 +31,14 @@ export default function ChatInfo() {
     return;
   }
 
+
   // Set person #1 to be the logged in user
   people[0] = user;
 
   // Set the second user to be the foreign user
   people[1] = foreignUser;
+
+  console.log("PEEPS: ", people);
 
   return (
     chat && (
