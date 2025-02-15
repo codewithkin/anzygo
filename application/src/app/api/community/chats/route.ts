@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
         users: {
           every: {
             id: {
-              in: [receivingUser?.id, thisUser?.id],
+              in: [receivingUser?.id || "", thisUser?.id || ""],
             },
           },
         },
@@ -121,18 +121,9 @@ export async function POST(request: NextRequest) {
 
     // Create a new chat
     if (!newChat) {
-      let newChat = await prisma.chat.create({
+      newChat = await prisma.chat.create({
         data: {
           type: "private",
-        },
-      });
-
-      // Add the users to the chat
-      await prisma.chat.update({
-        where: {
-          id: newChat.id,
-        },
-        data: {
           users: {
             connect: [
               {

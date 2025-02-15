@@ -178,6 +178,8 @@ const Controls = () => {
 const LeftBar = ({ chats }: { chats: any }) => {
   const [filteredChats, setFilteredChats] = useState<any | null>(null);
 
+  console.log("Chats according to leftbar: ", chats);
+
   useEffect(() => {
     setFilteredChats(chats);
   }, [chats]);

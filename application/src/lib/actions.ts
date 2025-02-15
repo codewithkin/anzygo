@@ -35,9 +35,7 @@ export const getUser = async () => {
     where: {
       users: {
         some: {
-          id: {
-            in: [chatUser?.id || ""],
-          },
+          id: chatUser?.id,
         },
       },
     },
