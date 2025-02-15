@@ -99,12 +99,16 @@ export async function POST(request: NextRequest) {
       where: {
         type: "private",
         users: {
-          some: {
+          every: {
             id: {
               in: [receivingUser?.id, thisUser?.id],
             },
           },
         },
+        AND: [
+          { users: { some: { id: receivingUser?.id } } },
+          { users: { some: { id: thisUser?.id } } }
+        ]
       },
     });
 

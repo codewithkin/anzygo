@@ -131,23 +131,27 @@ const Controls = () => {
       <h2 className="text-xl font-semibold">Anzygo</h2>
 
       {/* Actual controls */}
-      <article className="flex gap-4 items-center">
+      <article className="flex gap-4 items-center my-2">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
-              <Button onClick={() => router.push("/chats/new")} variant="outline">
-                <Plus size={20} />
-              </Button>
+            <TooltipTrigger asChild>
+              <span>
+                <Button onClick={() => router.push("/chats/new")} variant="outline">
+                  <Plus size={20} />
+                </Button>
+              </span>
             </TooltipTrigger>
 
             <TooltipContent>Start a new chat</TooltipContent>
           </Tooltip>
 
           <Tooltip>
-            <TooltipTrigger>
-              <Button onClick={() => queryClient.invalidateQueries({queryKey: ["getUser"]})} variant="outline">
-                <RefreshCw size={20} />
-              </Button>
+            <TooltipTrigger asChild>
+              <span>
+                <Button onClick={() => queryClient.invalidateQueries({queryKey: ["getUser"]})} variant="outline">
+                  <RefreshCw size={20} />
+                </Button>
+              </span>
             </TooltipTrigger>
 
             <TooltipContent>Refresh</TooltipContent>
