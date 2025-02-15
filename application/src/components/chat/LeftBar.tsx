@@ -1,6 +1,6 @@
 "use client";
 import { formatDistanceToNow } from "date-fns";
-import { Search } from "lucide-react";
+import { FolderPlus, Plus, RefreshCw, Router, Search } from "lucide-react";
 import { Avatar } from "@heroui/avatar";
 import { Input } from "@heroui/input";
 import Image from "next/image";
@@ -11,6 +11,9 @@ import { useSelectedChatStore } from "@/stores/useSelectedChat";
 import { ChatsType, ChatType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { getSpecificUser } from "@/lib/actions";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import { useRouter } from "next/navigation";
+import useQueryStore from "@/providers/CustomQueryClientProvider";
 
 const SearchBar = ({ chats }: { chats: ChatsType }) => {
   const [filteredChats, setFilteredChats] = useState<any | null>(null);
@@ -116,6 +119,45 @@ const NoChatsFound = () => {
   );
 };
 
+const Controls = () => {
+  // Get the router (for redirection)
+  const router = useRouter();
+
+  // Get the query client
+  const queryClient = useQueryStore(state => state.queryClient);
+
+  return (
+    <article className="flex justify-between items-center my-2 w-full">
+      <h2 className="text-xl font-semibold">Anzygo</h2>
+
+      {/* Actual controls */}
+      <article className="flex gap-4 items-center">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button onClick={() => router.push("/chats/new")} variant="outline">
+                <Plus size={20} />
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Start a new chat</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Button onClick={() => queryClient.invalidateQueries({queryKey: ["getUser"]})} variant="outline">
+                <RefreshCw size={20} />
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Refresh</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </article>
+    </article>
+  )
+}
+
 const LeftBar = ({ chats }: { chats: any }) => {
   const [filteredChats, setFilteredChats] = useState<any | null>(null);
 
@@ -126,6 +168,7 @@ const LeftBar = ({ chats }: { chats: any }) => {
   return (
     <article className="h-full overflow-y-scroll w-1/4">
       <SearchBar chats={chats} />
+      <Controls />
 
       <article className="flex flex-col md:gap-8 my-4 w-full h-full">
         {filteredChats ? (
