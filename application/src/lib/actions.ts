@@ -32,13 +32,14 @@ export const getUser = async () => {
     include: {
       chat: {
         include: {
-          chatUsers: true,  // Include users in the chat (optional)
-          messages: {   // Include last message (optional)
+          chatUsers: true, // Include users in the chat (optional)
+          messages: {
+            // Include last message (optional)
             orderBy: { createdAt: "desc" },
-            take: 1
-          }
-        }
-      }
+            take: 1,
+          },
+        },
+      },
     },
   });
 
@@ -49,7 +50,6 @@ export const getUser = async () => {
 
   return { user, chats };
 };
-
 
 export const getSpecificUser = async (id: string) => {
   // Find a chatUser with the corresponding id

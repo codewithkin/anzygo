@@ -40,7 +40,7 @@ import { useUserInfo } from "@/stores/useUserInfo";
 import { ChatType, UserType } from "@/types";
 import { useForeignUser } from "@/stores/useForeignUser";
 import { v4 } from "uuid";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 
 const StatusIndicator = ({
   status,
@@ -263,7 +263,9 @@ function Page({ chat }: { chat: ChatType }) {
   useEffect(() => {
     // Listen for messages from server
     if (chat) {
-      socket.on("receive-dm", (data: { roomId: string; email: string; message: string }) => {
+      socket.on(
+        "receive-dm",
+        (data: { roomId: string; email: string; message: string }) => {
           console.log("DM received client-side: ", data);
 
           setMessages((prev) => [...prev, data]);

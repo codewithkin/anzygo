@@ -31,7 +31,6 @@ export default function ChatInfo() {
     return;
   }
 
-
   // Set person #1 to be the logged in user
   people[0] = user;
 
@@ -119,7 +118,7 @@ export default function ChatInfo() {
           </CardContent>
         </Card>
 
-        <Card className="bg-primary text-white">
+        <Card>
           <CardHeader>
             <CardTitle className="text-2xl">
               People in this conversation
@@ -128,12 +127,15 @@ export default function ChatInfo() {
 
           <CardContent className="flex flex-col gap-2">
             {people.map((person: UserType) => (
-              <article className="flex gap-2 items-center" key={person?.id}>
+              <article className="flex gap-4 items-center" key={person?.id}>
                 <Avatar
-                  src={person?.image}
-                  radius="md"
-                  size="md"
+                  className="min-w-12 max-w-12 min-h-12 max-h-12 text-sm"
+                  showFallback
+                  isBordered
+                  radius="full"
+                  color="primary"
                   name={person?.name || "Kin"}
+                  src={person?.image || "/images/user.png"}
                 />
 
                 <h2 className=" font-semibold">{person?.name}</h2>
