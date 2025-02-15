@@ -14,6 +14,7 @@ import { auth } from "@/auth";
 import { getUser } from "@/lib/actions";
 import { prisma } from "@/prisma";
 import { UserType } from "@/types";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -144,6 +145,9 @@ export async function POST(request: NextRequest) {
 
     // Log the newly created chat to the console
     console.log(newChat);
+
+    // Reload the chats
+    revalidatePath("/chats")
 
     // Return the newly created chat
     return NextResponse.json(newChat);
