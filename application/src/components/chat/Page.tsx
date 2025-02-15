@@ -270,6 +270,14 @@ function Page({ chat }: { chat: ChatType }) {
         console.log("User joined our room: ", data);
 
         setStatus("Online");
+
+        socket.emit("present", data);
+      });
+
+      socket.on("user-present", (data) => {
+        console.log("User is present: ", data);
+
+        setStatus("Online");
       });
 
       socket.on("disconnect", () => {

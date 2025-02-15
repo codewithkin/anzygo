@@ -23,6 +23,12 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("user-joined", roomId);
   })
 
+  socket.on("present", (roomId) => {  
+    console.log("User is present: ", roomId);
+
+    io.to(roomId).emit("user-present", roomId);
+  })
+
   socket.on("send-dm", ({roomId, email, message}) => {
     console.log("DM received: ", message);
 
