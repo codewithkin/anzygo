@@ -1,16 +1,16 @@
 export type UserType = {
   id: string;
   email: string;
-  emailVerified: string;
+  emailVerified: Date | null | string;
   public: boolean;
   name: string;
   image: string;
   bio: string;
-  status: "Away" | "Online" | "Typing";
+  status: string;
   theme: string;
   settings: any;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 };
 
 export type ChatType = {
@@ -18,8 +18,8 @@ export type ChatType = {
   type: string;
   name: string | null;
   image: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | null | string;
+  updatedAt: Date | null | string;
   users: {
     id: string;
     userId: string;
@@ -27,8 +27,8 @@ export type ChatType = {
     role: string;
     user: UserType;
     chat: ChatType;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Date | null | string;
+    updatedAt: Date | null | string;
   }[];
 };
 
