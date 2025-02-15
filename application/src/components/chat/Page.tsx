@@ -258,10 +258,8 @@ function Page({ chat }: { chat: ChatType }) {
 
   useEffect(() => {
     // Listen for messages from server
-    if (socket && chat) {
-      socket.on(
-        "receive-dm",
-        (data: { roomId: string; email: string; message: string }) => {
+    if (chat) {
+      socket.on("receive-dm", (data: { roomId: string; email: string; message: string }) => {
           console.log("DM received client-side: ", data);
 
           setMessages((prev) => [...prev, data]);
@@ -282,7 +280,7 @@ function Page({ chat }: { chat: ChatType }) {
         socket.off("message");
       };
     }
-  }, [socket]);
+  }, [socket, chat]);
 
   // Connect to a room
   useEffect(() => {
