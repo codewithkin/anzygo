@@ -119,10 +119,11 @@ const Header = ({
   status: "Away" | "Online" | "Typing";
   user: UserType | null | undefined;
 }) => {
+
   return (
     <article className="w-full flex justify-between items-center py-2">
       <article className="flex flex-col gap-2 w-full">
-        <article className="flex items-center gap-2">
+        <article className="flex items-center gap-4">
           <Avatar
             className="w-8 h-8 text-sm"
             showFallback
@@ -130,7 +131,7 @@ const Header = ({
             color="primary"
             name={user?.email || ""}
             radius="full"
-            src={user?.image}
+            src={user?.image || "/images/kin.jpg"}
           />
           <h2 className="text-xl font-semibold">{user?.email}</h2>
         </article>
@@ -255,6 +256,7 @@ const MessageInput = ({
 function Page({ chat }: { chat: ChatType }) {
   // Get the foreign user's data
   const foreignUser = useForeignUser((state) => state.foreignUser);
+
 
   const [messages, setMessages] = useState<
     { roomId: string; email: string; message: string }[]

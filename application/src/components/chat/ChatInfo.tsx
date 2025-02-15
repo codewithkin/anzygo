@@ -120,12 +120,12 @@ export default function ChatInfo() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">
+            <CardTitle className="text-xl">
               People in this conversation
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="flex flex-col gap-2">
+          <CardContent className="flex flex-col gap-4">
             {people.map((person: UserType) => (
               <article className="flex gap-4 items-center" key={person?.id}>
                 <Avatar
@@ -138,7 +138,7 @@ export default function ChatInfo() {
                   src={person?.image || "/images/user.png"}
                 />
 
-                <h2 className=" font-semibold">{person?.name}</h2>
+                <h2 className="font-semibold">{person?.name}</h2>
               </article>
             ))}
           </CardContent>
