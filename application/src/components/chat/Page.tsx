@@ -39,6 +39,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useUserInfo } from "@/stores/useUserInfo";
 import { ChatType, UserType } from "@/types";
 import { useForeignUser } from "@/stores/useForeignUser";
+import { v4 } from "uuid";
+import {motion} from "framer-motion";
 
 const StatusIndicator = ({
   status,
@@ -169,13 +171,15 @@ const Messages = ({
       {messageData.length > 0 ? (
         messageData.map(
           (message: { roomId: string; email: string; message: string }) => (
-            <article className={`rounded-xl p-4`} key={message.message}>
+            <article className={`rounded-xl p-4 w-full flex`} key={v4()}>
               {/* Message content */}
-              <article
-                className={`rounded-xl p-4 ${email == message.email ? "bg-primary text-white" : "bg-slate-500 text-white md:max-w-[800px]"}`}
+              <motion.article
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 1 }}
+                className={`rounded-xl p-4 ${email == message.email ? "bg-primary align-self-end text-white" : "bg-slate-500 text-white align-self-start md:max-w-[800px]"}`}
               >
                 <p>{message.message}</p>
-              </article>
+              </motion.article>
             </article>
           ),
         )
