@@ -29,8 +29,10 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("receive-dm", {roomId, email, message});
   })
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", (roomId) => {
     console.log("User disconnected:", socket.id);
+
+    io.to(roomId).emit("user-left", roomId);
   });
 });
 

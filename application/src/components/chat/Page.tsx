@@ -199,8 +199,6 @@ const MessageInput = ({
   // Fetch the user's session info
   const user = useUserInfo((state) => state.userInfo);
 
-  console.log("Data according to message input: ", user);
-
   const [message, setMessage] = useState<string | undefined>("");
 
   const sendMessage = () => {
@@ -254,8 +252,6 @@ function Page({ chat }: { chat: ChatType }) {
   // Get the foreign user's data
   const foreignUser = useForeignUser((state) => state.foreignUser);
 
-  console.log("Foreign user according to page: ", foreignUser);
-
   const [messages, setMessages] = useState<
     { roomId: string; email: string; message: string }[]
   >([]);
@@ -297,8 +293,6 @@ function Page({ chat }: { chat: ChatType }) {
 
   // Track the other user's status
   const [status, setStatus] = useState<"Away" | "Online" | "Typing">("Away");
-
-  console.log("Chat according to page :", chat);
 
   if (!chat) {
     return (
