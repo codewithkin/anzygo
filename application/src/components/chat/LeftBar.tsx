@@ -11,7 +11,12 @@ import { useSelectedChatStore } from "@/stores/useSelectedChat";
 import { ChatsType, ChatType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { getSpecificUser } from "@/lib/actions";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 import { useRouter } from "next/navigation";
 import useQueryStore from "@/providers/CustomQueryClientProvider";
 
@@ -124,7 +129,7 @@ const Controls = () => {
   const router = useRouter();
 
   // Get the query client
-  const queryClient = useQueryStore(state => state.queryClient);
+  const queryClient = useQueryStore((state) => state.queryClient);
 
   return (
     <article className="flex justify-between items-center my-2 w-full">
@@ -136,7 +141,10 @@ const Controls = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <span>
-                <Button onClick={() => router.push("/chats/new")} variant="outline">
+                <Button
+                  onClick={() => router.push("/chats/new")}
+                  variant="outline"
+                >
                   <Plus size={20} />
                 </Button>
               </span>
@@ -148,7 +156,12 @@ const Controls = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <span>
-                <Button onClick={() => queryClient.invalidateQueries({queryKey: ["getUser"]})} variant="outline">
+                <Button
+                  onClick={() =>
+                    queryClient.invalidateQueries({ queryKey: ["getUser"] })
+                  }
+                  variant="outline"
+                >
                   <RefreshCw size={20} />
                 </Button>
               </span>
@@ -159,8 +172,8 @@ const Controls = () => {
         </TooltipProvider>
       </article>
     </article>
-  )
-}
+  );
+};
 
 const LeftBar = ({ chats }: { chats: any }) => {
   const [filteredChats, setFilteredChats] = useState<any | null>(null);

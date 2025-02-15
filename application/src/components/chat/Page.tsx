@@ -115,9 +115,8 @@ const Header = ({
   user,
 }: {
   status: "Away" | "Online" | "Typing";
-  user: UserType | null | undefined
+  user: UserType | null | undefined;
 }) => {
-
   return (
     <article className="w-full flex justify-between items-center py-2">
       <article className="flex flex-col gap-2 w-full">
@@ -157,20 +156,13 @@ const Messages = ({
 }: {
   messageData: { roomId: string; email: string; message: string }[];
 }) => {
-
   useEffect(() => {
     console.log("Message data: ", messageData);
   }, [messageData]);
 
   const user = useUserInfo((state) => state.userInfo);
 
-  if (!user) {
-    console.log("ALERT: No user", user);
-  }
-
   const email = user?.email;
-
-  console.log("Emaiiiiiiiiiiiiiiiiiiiiiiil: ", email);
 
   return (
     <article className="w-full gap-4 flex flex-col h-4/5 overflow-y-scroll">
@@ -180,7 +172,7 @@ const Messages = ({
             <article className={`rounded-xl p-4`} key={message.message}>
               {/* Message content */}
               <article
-                className={`${email == message.email ? "bg-primary text-white" : "bg-slate-500 text-white"}`}
+                className={`rounded-xl p-4 ${email == message.email ? "bg-primary text-white" : "bg-slate-500 text-white md:max-w-[800px]"}`}
               >
                 <p>{message.message}</p>
               </article>
@@ -205,7 +197,7 @@ const MessageInput = ({
   messages: any;
 }) => {
   // Fetch the user's session info
-  const user = useUserInfo(state => state.userInfo);
+  const user = useUserInfo((state) => state.userInfo);
 
   console.log("Data according to message input: ", user);
 
@@ -258,15 +250,11 @@ const MessageInput = ({
   );
 };
 
-function Page({chat}: { chat: ChatType }) {
-
-  if(!chat) {
-    console.log("ALERT: NO TYPE");
-    return;
-  }
-
+function Page({ chat }: { chat: ChatType }) {
   // Get the foreign user's data
-  const foreignUser = useForeignUser(state => state.foreignUser);
+  const foreignUser = useForeignUser((state) => state.foreignUser);
+
+  console.log("Foreign user according to page: ", foreignUser);
 
   const [messages, setMessages] = useState<
     { roomId: string; email: string; message: string }[]
@@ -310,7 +298,7 @@ function Page({chat}: { chat: ChatType }) {
   // Track the other user's status
   const [status, setStatus] = useState<"Away" | "Online" | "Typing">("Away");
 
-  console.log("Chat according to page :", chat)
+  console.log("Chat according to page :", chat);
 
   if (!chat) {
     return (

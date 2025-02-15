@@ -48,7 +48,7 @@ export const getUser = async () => {
 
   console.log("This user's chats: ", chats);
 
-  return { user, chats };
+  return { user, chats, chatUser };
 };
 
 export const getSpecificUser = async (id: string) => {

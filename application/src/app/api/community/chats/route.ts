@@ -107,8 +107,8 @@ export async function POST(request: NextRequest) {
         },
         AND: [
           { users: { some: { id: receivingUser?.id } } },
-          { users: { some: { id: thisUser?.id } } }
-        ]
+          { users: { some: { id: thisUser?.id } } },
+        ],
       },
     });
 
@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
     console.log(newChat);
 
     // Reload the chats
-    revalidatePath("/chats")
+    revalidatePath("/chats");
 
     // Return the newly created chat
     return NextResponse.json(newChat);

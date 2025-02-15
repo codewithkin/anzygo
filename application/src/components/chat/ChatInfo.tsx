@@ -21,14 +21,14 @@ export default function ChatInfo() {
   const people: UserType[] = [];
 
   // Get the foreign user
-  const foreignUser = useForeignUser(state => state.foreignUser);
+  const foreignUser = useForeignUser((state) => state.foreignUser);
 
-  const user = useUserInfo(state => state.userInfo);
+  const user = useUserInfo((state) => state.userInfo);
 
-  if(!people || !user || !foreignUser) {
+  if (!people || !user || !foreignUser) {
     console.log("NO PEOPLE HERE");
 
-      return
+    return;
   }
 
   // Set person #1 to be the logged in user

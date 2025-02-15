@@ -40,25 +40,29 @@ export default function Chats() {
   const queryClient = useQueryStore((state) => state.queryClient);
 
   const selectedChat = useSelectedChatStore((state) => state.selectedChat);
-  const setSelectedChat = useSelectedChatStore((state) => state.setSelectedChat);
+  const setSelectedChat = useSelectedChatStore(
+    (state) => state.setSelectedChat,
+  );
 
   // Foreign user state
   const setForeignUser = useForeignUser((state) => state.setForeignUser);
 
- // Identify the foreign user (opposite user)
-const foreignUserId = selectedChat?.users?.find((user: UserType) => user.id !== data?.user?.id)?.id;
+  // Identify the foreign user (opposite user)
+  const foreignUserId = selectedChat?.users?.find(
+    (user: UserType) => user.id !== data?.chatUser?.id,
+  )?.id;
 
-// Fetch the foreign user only when `foreignUserId` exists
-const { data: foreignUserData } = useQuery({
-  queryKey: ["foreignUser", foreignUserId], 
-  queryFn: async () => {
-    if (foreignUserId) {
-      return await getSpecificUser(foreignUserId);
-    }
-    return null;
-  },
-  enabled: !!foreignUserId, // ✅ Prevents unnecessary calls
-});
+  // Fetch the foreign user only when `foreignUserId` exists
+  const { data: foreignUserData } = useQuery({
+    queryKey: ["foreignUser", foreignUserId],
+    queryFn: async () => {
+      if (foreignUserId) {
+        return await getSpecificUser(foreignUserId);
+      }
+      return null;
+    },
+    enabled: !!foreignUserId, // ✅ Prevents unnecessary calls
+  });
 
   // ✅ Update selected chat and foreign user when chats change
   useEffect(() => {
