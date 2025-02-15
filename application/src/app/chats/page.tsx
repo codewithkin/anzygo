@@ -11,7 +11,7 @@ import { useEffect, useRef } from "react";
 import { createChat } from "@/helpers/queries/createChat";
 import { useSelectedChatStore } from "@/stores/useSelectedChat";
 import useQueryStore from "@/providers/CustomQueryClientProvider";
-import { ChatsType } from "@/types";
+import { ChatsType, UserType } from "@/types";
 import { useUserInfo } from "@/stores/useUserInfo";
 import { useForeignUser } from "@/stores/useForeignUser";
 
@@ -45,17 +45,20 @@ export default function Chats() {
   // Foreign user state
   const setForeignUser = useForeignUser((state) => state.setForeignUser);
 
-  // Fetch the foreign user only when a chat is selected
-  const { data: foreignUserData } = useQuery({
-    queryKey: ["foreignUser", selectedChat?.users[1]?.id], // Ensure unique query key
-    queryFn: async () => {
-      if (selectedChat?.users[1]?.id) {
-        return await getSpecificUser(selectedChat.users[1].id);
-      }
-      return null;
-    },
-    enabled: !!selectedChat?.users[1]?.id, // ✅ Prevents unnecessary calls
-  });
+ // Identify the foreign user (opposite user)
+const foreignUserId = selectedChat?.users?.find((user: UserType) => user.id !== data?.user?.id)?.id;
+
+// Fetch the foreign user only when `foreignUserId` exists
+const { data: foreignUserData } = useQuery({
+  queryKey: ["foreignUser", foreignUserId], 
+  queryFn: async () => {
+    if (foreignUserId) {
+      return await getSpecificUser(foreignUserId);
+    }
+    return null;
+  },
+  enabled: !!foreignUserId, // ✅ Prevents unnecessary calls
+});
 
   // ✅ Update selected chat and foreign user when chats change
   useEffect(() => {

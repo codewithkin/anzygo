@@ -125,7 +125,7 @@ export default function ChatInfo() {
 
           <CardContent className="flex flex-col gap-2">
             {people.map((person: UserType) => (
-              <article className="flex gap-2 items-center" key={person?.email}>
+              <article className="flex gap-2 items-center" key={person?.id}>
                 <Avatar
                   src={person?.image}
                   radius="md"
