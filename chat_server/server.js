@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", (roomId) => {
     console.log("User disconnected:", socket.id);
 
-    io.to(roomId).emit("user-left", roomId);
+    socket.emit("user-left", roomId);
   });
 });
 

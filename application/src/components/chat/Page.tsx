@@ -280,7 +280,7 @@ function Page({ chat }: { chat: ChatType }) {
         setStatus("Online");
       });
 
-      socket.on("disconnect", () => {
+      socket.on("user-left", () => {
         setStatus("Away");
       });
 
