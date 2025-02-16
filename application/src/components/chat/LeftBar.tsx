@@ -19,6 +19,7 @@ import {
 } from "../ui/tooltip";
 import { useRouter } from "next/navigation";
 import useQueryStore from "@/providers/CustomQueryClientProvider";
+import { toast } from "sonner";
 
 const SearchBar = ({ chats }: { chats: ChatsType }) => {
   const [filteredChats, setFilteredChats] = useState<any | null>(null);
@@ -131,6 +132,9 @@ const Controls = () => {
   // Get the query client
   const queryClient = useQueryStore((state) => state.queryClient);
 
+  // Track whether the component is refreshing the user's chats
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
   return (
     <article className="flex justify-between items-center my-2 w-full">
       <h2 className="text-xl font-semibold">Anzygo</h2>
@@ -157,12 +161,22 @@ const Controls = () => {
             <TooltipTrigger asChild>
               <span>
                 <Button
-                  onClick={() =>
-                    queryClient.invalidateQueries({ queryKey: ["getUser"] })
+                  onClick={() =>{
+                      // Rotate the icon
+                      setRefreshing(true);
+
+                      queryClient.invalidateQueries({ queryKey: ["getUser"] });
+
+                      // Stop rotating the icon
+                      setRefreshing(false);
+
+                      // Show a success toast
+                      toast("Chats refreshed successfully");
+                    }
                   }
                   variant="outline"
                 >
-                  <RefreshCw size={20} />
+                  <RefreshCw className={refreshing ? "animate-spin" : ""} size={20} />
                 </Button>
               </span>
             </TooltipTrigger>
