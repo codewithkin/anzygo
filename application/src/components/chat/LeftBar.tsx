@@ -20,6 +20,8 @@ import {
 import { useRouter } from "next/navigation";
 import useQueryStore from "@/providers/CustomQueryClientProvider";
 import { toast } from "sonner";
+import { ChatUser } from "@prisma/client";
+import { useUserInfo } from "@/stores/useUserInfo";
 
 const SearchBar = ({ chats }: { chats: ChatsType }) => {
   const [filteredChats, setFilteredChats] = useState<any | null>(null);
@@ -66,14 +68,23 @@ const SearchBar = ({ chats }: { chats: ChatsType }) => {
 };
 
 const ChatCard = ({ chat }: { chat: ChatType }) => {
+  // Retrieve a function, setSelectedChat for updating the selected chat when a ChatCard is clicked
   const setSelectedChat = useSelectedChatStore(
     (state) => state.setSelectedChat,
   );
 
+  // Get the logged in user's data
+  const user = useUserInfo(state => state.userInfo);
+
+  // Get the other user's id
+  const otherUser = chat.chatUsers.find(
+    (chatUser: ChatUser) => chatUser.id !== user?.id,
+  ) || {id: ""}
+
   // Get the receiving user's data
   const { data } = useQuery({
     queryKey: ["getSpecificUser"],
-    queryFn: async () => await getSpecificUser(chat.chatUsers[1].id),
+    queryFn: async () => await getSpecificUser(otherUser.id),
   });
 
   return (

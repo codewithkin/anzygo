@@ -22,7 +22,7 @@ export type ChatType = {
   image: string | null;
   createdAt: Date;
   updatedAt: Date;
-  users: {
+  chatUsers: {
     id: string;
     userId: string;
     chatId: string;
